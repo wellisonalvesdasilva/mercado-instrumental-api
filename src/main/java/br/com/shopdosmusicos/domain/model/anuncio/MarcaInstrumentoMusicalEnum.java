@@ -2,7 +2,7 @@ package br.com.shopdosmusicos.domain.model.anuncio;
 
 import br.com.shopdosmusicos.enums.ItemValorDescricao;
 
-public enum MarcaInstrumentoMusical implements ItemValorDescricao {
+public enum MarcaInstrumentoMusicalEnum implements ItemValorDescricao {
 
 	YAMAHA("Yamaha"),
 	SELMER("Semler"),
@@ -14,7 +14,7 @@ public enum MarcaInstrumentoMusical implements ItemValorDescricao {
 	
     private String label;
 
-	private MarcaInstrumentoMusical(String label) {
+	private MarcaInstrumentoMusicalEnum(String label) {
 		this.label = label;
 	}
 

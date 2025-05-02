@@ -15,54 +15,54 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "IMAGEM_ANUNCIO")
 public class ImagemAnuncio {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_IMAGEM_ANUNCIO")
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID_IMAGEM_ANUNCIO")
+	private Long id;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "ID_ANUNCIO")
-    private Anuncio anuncio;
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "ID_ANUNCIO")
+	private Anuncio anuncio;
 
-    @NotNull
-    @Lob
-    @Column(name = "CONTEUDO_ARQUIVO")
-    private byte[] conteudoArquivo;
+	@NotNull
+	@Lob
+	@Column(name = "SRC_DIR")
+	private String srcDir;
 
-    @NotNull
-    @Column(name = "IN_MINIATURA", nullable = false)
-    private Boolean miniatura;
+	@NotNull
+	@Column(name = "IN_MINIATURA", nullable = false)
+	private Boolean miniatura;
 
-    public Long getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public Anuncio getAnuncio() {
-        return anuncio;
-    }
+	public Anuncio getAnuncio() {
+		return anuncio;
+	}
 
-    public void setAnuncio(Anuncio anuncio) {
-        this.anuncio = anuncio;
-    }
+	public void setAnuncio(Anuncio anuncio) {
+		this.anuncio = anuncio;
+	}
 
-    public byte[] getConteudoArquivo() {
-        return conteudoArquivo;
-    }
+	public String getSrcDir() {
+		return srcDir;
+	}
 
-    public void setConteudoArquivo(byte[] conteudoArquivo) {
-        this.conteudoArquivo = conteudoArquivo;
-    }
+	public void setSrcDir(String srcDir) {
+		this.srcDir = srcDir;
+	}
 
-    public Boolean getMiniatura() {
-        return miniatura;
-    }
+	public Boolean getMiniatura() {
+		return miniatura;
+	}
 
-    public void setMiniatura(Boolean miniatura) {
-        this.miniatura = miniatura;
-    }
+	public void setMiniatura(Boolean miniatura) {
+		this.miniatura = miniatura;
+	}
 }

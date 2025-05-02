@@ -5,7 +5,7 @@ import br.com.shopdosmusicos.enums.ItemValorDescricao;
 public enum TipoPerfilEnum implements ItemValorDescricao {
 
 	ADMINISTRADOR(1, "ROLE_ADMINISTRADOR"), 
-	OPERADOR(2, "ROLE_OPERADOR");
+	ANUNCIANTE(2, "ROLE_ANUNCIANTE");
 
 	private int cod;
 	private String descricao;

@@ -1,7 +1,6 @@
 package br.com.shopdosmusicos.domain.model.anuncio;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import br.com.shopdosmusicos.model.usuario.Usuario;
@@ -30,7 +29,7 @@ public class Anuncio {
 	@NotNull
 	@Size(max = 100)
 	@Column(name = "NO_ANUNCIO")
-	private String nome;
+	private String titulo;
 
 	@Size(max = 4000)
 	@Column(name = "DS_ANUNCIO")
@@ -42,11 +41,15 @@ public class Anuncio {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "EN_MARCA")
-	private MarcaInstrumentoMusical marca;
+	private MarcaInstrumentoMusicalEnum marca;
 
 	@NotNull
-	@Column(name = "ID_MUNICIPIO_IBGE")
-	private Long idMunicipioIbge;
+	@Column(name = "NO_ESTADO")
+	private String estado;
+
+	@NotNull
+	@Column(name = "NO_MUNICIPIO")
+	private String municipio;
 
 	@Column(name = "VL_ANUNCIO")
 	private BigDecimal valor;
@@ -75,20 +78,28 @@ public class Anuncio {
 	public Anuncio() {
 	}
 
-	public Anuncio(@NotNull @Size(max = 100) String nome, @Size(max = 4000) String descricao,
-			TipoInstrumentoMusicalEnum tipo, MarcaInstrumentoMusical marca, @NotNull Long idMunicipioIbge,
-			BigDecimal valor, @NotNull Boolean novo, @NotNull Usuario usuario) {
-		this.nome = nome;
+	public Anuncio(
+			@NotNull @Size(max = 100) String titulo,
+			@Size(max = 4000) String descricao,
+			TipoInstrumentoMusicalEnum tipo,
+			MarcaInstrumentoMusicalEnum marca,
+			@NotNull String estado,
+			@NotNull String municipio,
+			BigDecimal valor,
+			@NotNull Boolean novo,
+			@NotNull Boolean ativo,
+			@NotNull Usuario usuario) {
+		this.titulo = titulo;
 		this.descricao = descricao;
 		this.tipo = tipo;
 		this.marca = marca;
-		this.idMunicipioIbge = idMunicipioIbge;
+		this.estado = estado;
+		this.municipio = municipio;
 		this.valor = valor;
 		this.novo = novo;
+		this.ativo = ativo;
 		this.dataHoraPublicacao = LocalDateTime.now();
-		this.quantidadeAcesso = 0L;
 		this.usuario = usuario;
-		this.ativo = false;
 	}
 
 	public Long getId() {
@@ -99,12 +110,12 @@ public class Anuncio {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getTitulo() {
+		return titulo;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 
 	public String getDescricao() {
@@ -123,28 +134,28 @@ public class Anuncio {
 		this.tipo = tipo;
 	}
 
-	public MarcaInstrumentoMusical getMarca() {
+	public MarcaInstrumentoMusicalEnum getMarca() {
 		return marca;
 	}
 
-	public void setMarca(MarcaInstrumentoMusical marca) {
+	public void setMarca(MarcaInstrumentoMusicalEnum marca) {
 		this.marca = marca;
 	}
 
-	public Long getIdMunicipioIbge() {
-		return idMunicipioIbge;
+	public String getEstado() {
+		return estado;
 	}
 
-	public void setIdMunicipioIbge(Long idMunicipioIbge) {
-		this.idMunicipioIbge = idMunicipioIbge;
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public String getMunicipio() {
+		return municipio;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setMunicipio(String municipio) {
+		this.municipio = municipio;
 	}
 
 	public BigDecimal getValor() {
@@ -185,6 +196,14 @@ public class Anuncio {
 
 	public void setQuantidadeAcesso(Long quantidadeAcesso) {
 		this.quantidadeAcesso = quantidadeAcesso;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 }

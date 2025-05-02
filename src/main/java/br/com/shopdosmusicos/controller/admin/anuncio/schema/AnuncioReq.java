@@ -2,7 +2,7 @@ package br.com.shopdosmusicos.controller.admin.anuncio.schema;
 
 import java.math.BigDecimal;
 
-import br.com.shopdosmusicos.domain.model.anuncio.MarcaInstrumentoMusical;
+import br.com.shopdosmusicos.domain.model.anuncio.MarcaInstrumentoMusicalEnum;
 import br.com.shopdosmusicos.domain.model.anuncio.TipoInstrumentoMusicalEnum;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Min;
@@ -11,11 +11,8 @@ import jakarta.validation.constraints.Size;
 public record AnuncioReq(
     
     @NotNull
-    Long id,
-    
-    @NotNull
     @Size(min = 1, max = 100)
-    String nome,
+    String titulo,
     
     @NotNull
     @Size(min = 1, max = 4000)
@@ -25,10 +22,13 @@ public record AnuncioReq(
     TipoInstrumentoMusicalEnum tipo,
     
     @NotNull
-    MarcaInstrumentoMusical marca,
+    MarcaInstrumentoMusicalEnum marca,
     
     @NotNull
-    Long idMunicipioIbge,
+    String estado,
+    
+    @NotNull
+    String municio,
     
     @NotNull
     @Min(value = 0)
