@@ -1,4 +1,4 @@
-package br.com.shopdosmusicos.manager.anuncio;
+package br.com.shopdosmusicos.manager.admin.anuncio;
 
 import java.time.LocalTime;
 import java.util.ArrayList;

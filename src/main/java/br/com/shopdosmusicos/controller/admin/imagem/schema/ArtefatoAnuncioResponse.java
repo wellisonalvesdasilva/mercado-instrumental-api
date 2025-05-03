@@ -1,10 +1,12 @@
 package br.com.shopdosmusicos.controller.admin.imagem.schema;
 
-public record ImagemAnuncioResponse(
+import java.time.LocalDate;
+
+public record ArtefatoAnuncioResponse(
 		
 		Long idArtefato,
 		
-		Integer numero,
+		LocalDate dataUpload,
 		
 		String srcDir
 		

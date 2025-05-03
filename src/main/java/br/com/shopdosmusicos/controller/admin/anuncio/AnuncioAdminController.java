@@ -18,14 +18,14 @@ import br.com.shopdosmusicos.controller.admin.anuncio.schema.AnuncioResponse;
 import br.com.shopdosmusicos.controller.admin.anuncio.schema.AnuncioUpd;
 import br.com.shopdosmusicos.controller.commom.schema.ResponsePagedCommom;
 import br.com.shopdosmusicos.domain.model.anuncio.Anuncio;
-import br.com.shopdosmusicos.manager.anuncio.AnuncioManager;
+import br.com.shopdosmusicos.manager.admin.anuncio.AnuncioManager;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @Tag(name = "Anuncio::Anuncio")
 @RestController
 @RequestMapping("anuncios")
-public class AnuncioController {
+public class AnuncioAdminController {
 
 	@Autowired
 	private AnuncioManager anuncioManager;

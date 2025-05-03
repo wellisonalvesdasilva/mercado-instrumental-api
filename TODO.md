@@ -1,5 +1,7 @@
 [OK] Endpoints cadastro de anúncio (admin) - 01/05/2025.
-- Endpoints upload (admin) - salvar em storage.
-- Endpoints site
-- Endpoints IBGE
+[OK] Endpoints upload (admin) - salvar em storage - 03/05/2025.
+[OK] Endpoints site
+- Endpoints cadastroPessoa
+- Endpoints IBGE + endpoints enums
+- BusinessException
 - Testes unitários

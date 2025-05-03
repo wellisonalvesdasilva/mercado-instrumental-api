@@ -205,5 +205,9 @@ public class Anuncio {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+	
+	public void incrementarQtdeAcesso() {
+		this.quantidadeAcesso = this.quantidadeAcesso + 1;
+	}
 
 }

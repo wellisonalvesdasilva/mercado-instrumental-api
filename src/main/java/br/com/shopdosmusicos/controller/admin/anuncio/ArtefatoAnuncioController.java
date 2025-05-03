@@ -14,42 +14,45 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.com.shopdosmusicos.controller.admin.imagem.schema.ImagemAnuncioResponse;
-import br.com.shopdosmusicos.controller.commom.schema.RwsDocumentoResponse;
-import br.com.shopdosmusicos.manager.anuncio.ImagemAnuncioManager;
+import br.com.shopdosmusicos.controller.admin.imagem.schema.ArtefatoAnuncioResponse;
+import br.com.shopdosmusicos.controller.commom.schema.RwsArtefatoResponse;
+import br.com.shopdosmusicos.domain.model.anuncio.ArtefatoAnuncio;
+import br.com.shopdosmusicos.manager.admin.anuncio.ArtefatoAnuncioManager;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 
 @Tag(name = "Anuncio::ImagemAnuncio")
 @RestController
 @RequestMapping("imagens-anuncio")
-public class ImagemAnuncioController {
+public class ArtefatoAnuncioController {
 
 
 	@Autowired
-	private ImagemAnuncioManager imagemAnuncioManager;
+	private ArtefatoAnuncioManager artefatoAnuncioManager;
 	
 	
     @GetMapping(path = {"{idAnuncio}"})
 	@PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
-    public ResponseEntity<List<ImagemAnuncioResponse>> findAllByAnuncio(
+    public ResponseEntity<List<ArtefatoAnuncioResponse>> findAllByAnuncio(
     		@PathVariable Long idAnuncio) {
-        return ResponseEntity.ok(imagemAnuncioManager.findAllByAnuncio(idAnuncio));
+        return ResponseEntity.ok(artefatoAnuncioManager.findAllByAnuncio(idAnuncio));
     }
     
 	@PostMapping(path = "{idAnuncio}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
-	public ResponseEntity<Boolean> uploadDocumento(
+	public ResponseEntity<Long> uploadArtefato(
 			@PathVariable @NotNull Long idAnuncio,
-			@RequestParam @NotNull MultipartFile[] arquivo) {
-		return ResponseEntity.ok(imagemAnuncioManager.upload(idAnuncio, arquivo));
+			@RequestParam @NotNull MultipartFile[] arquivo,
+			@RequestParam @NotNull Boolean isMiniatura) {
+		ArtefatoAnuncio imagemAnuncio = artefatoAnuncioManager.upload(idAnuncio, isMiniatura, arquivo);
+		return ResponseEntity.ok(imagemAnuncio.getId());
 	}
 	    
 	
     @PostMapping(path = "{idAnuncio}/download/{idArtefato}")
     @PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
-    public ResponseEntity<RwsDocumentoResponse> downloadDocumento(@PathVariable @NotNull Long idArtefato) {
-        return ResponseEntity.ok(imagemAnuncioManager.download(idArtefato));
+    public ResponseEntity<RwsArtefatoResponse> downloadArtefato(@PathVariable @NotNull Long idArtefato) {
+        return ResponseEntity.ok(artefatoAnuncioManager.download(idArtefato));
     }
 
 
