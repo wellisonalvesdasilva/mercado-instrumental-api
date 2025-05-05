@@ -12,7 +12,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.multipart.MultipartFile;
 
 import br.com.shopdosmusicos.controller.admin.anuncio.mapper.AnuncioMapper;
 import br.com.shopdosmusicos.controller.admin.anuncio.schema.AnuncioFilter;
@@ -26,7 +25,6 @@ import br.com.shopdosmusicos.model.usuario.Usuario;
 import br.com.shopdosmusicos.repository.anuncio.AnuncioRepository;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 
 @Service
 @Validated

@@ -2,6 +2,7 @@ package br.com.shopdosmusicos.model.usuario;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "USUARIO")
@@ -26,37 +29,52 @@ public class Usuario implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
+
+	@NotNull
+	@Size(max = 100)
+	@Column(name = "NO_USUARIO")
 	private String nome;
 
-	@Column(unique = true)
+	@NotNull
+	@Column(name = "TX_EMAIL", unique = true)
 	private String email;
 
-	@Column
+	@NotNull
+	@Column(name = "NU_WHATSAPP", unique = true)
 	private String whats;
 
 	@JsonIgnore
 	private String senha;
+
+	@Column(name = "palavra_chave_temp")
+	private String palavraChaveTemp;
+
+	@Column(name = "ativo")
+	private Boolean ativo;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "USUARIO_PERFIL")
 	private Set<Integer> perfil = new HashSet<>();
 
 	public Usuario() {
-		addPerfil(TipoPerfilEnum.ADMINISTRADOR);
 	}
 
-	public Usuario(String nome, String email, String senha) {
+	public Usuario(String nome, String email, String senha, String whats) {
 		this.nome = nome;
 		this.email = email;
 		this.senha = new BCryptPasswordEncoder().encode(senha);
+		this.whats = whats;
+		addPerfil(TipoPerfilEnum.ANUNCIANTE);
+		gerarNovaSenhaTemporaria();
+		ativo = false;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -112,6 +130,27 @@ public class Usuario implements Serializable {
 		return perfil;
 	}
 
+	public String getPalavraChaveTemp() {
+		return palavraChaveTemp;
+	}
+
+	public void setPalavraChaveTemp(String palavraChaveTemp) {
+		this.palavraChaveTemp = palavraChaveTemp;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	
+	public void gerarNovaSenhaTemporaria() {
+		this.palavraChaveTemp = new Random().ints(6, 0, 10).mapToObj(String::valueOf).collect(Collectors.joining());
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
