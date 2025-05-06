@@ -3,5 +3,4 @@
 [OK] Endpoints site
 [OK] Endpoints IBGE + endpoints enums - 06/05/2025.
 [OK] Finalizar endpoint de cadastro de pessoa (parte de e-mails) - 06/05/2025.
-- Endpoint de indicadores e configurar gmail.
-- Testes unitários.
+- Endpoint de indicadores, configurar gmail e subir projeto.
