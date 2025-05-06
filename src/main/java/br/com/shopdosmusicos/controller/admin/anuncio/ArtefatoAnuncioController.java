@@ -32,14 +32,14 @@ public class ArtefatoAnuncioController {
 	
 	
     @GetMapping(path = {"{idAnuncio}"})
-	@PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
+	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
     public ResponseEntity<List<ArtefatoAnuncioResponse>> findAllByAnuncio(
     		@PathVariable Long idAnuncio) {
         return ResponseEntity.ok(artefatoAnuncioManager.findAllByAnuncio(idAnuncio));
     }
     
 	@PostMapping(path = "{idAnuncio}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	@PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
+	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public ResponseEntity<Long> uploadArtefato(
 			@PathVariable @NotNull Long idAnuncio,
 			@RequestParam @NotNull MultipartFile[] arquivo,
@@ -50,7 +50,7 @@ public class ArtefatoAnuncioController {
 	    
 	
     @PostMapping(path = "{idAnuncio}/download/{idArtefato}")
-    @PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
+	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
     public ResponseEntity<RwsArtefatoResponse> downloadArtefato(@PathVariable @NotNull Long idArtefato) {
         return ResponseEntity.ok(artefatoAnuncioManager.download(idArtefato));
     }

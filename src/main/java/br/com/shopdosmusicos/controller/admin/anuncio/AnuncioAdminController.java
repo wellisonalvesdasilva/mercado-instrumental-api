@@ -31,14 +31,14 @@ public class AnuncioAdminController {
 	private AnuncioManager anuncioManager;
 	
 	@PostMapping
-	@PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
+	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public ResponseEntity<Long> createAnuncio(@Valid @RequestBody AnuncioReq req) {
 		Anuncio anuncio = anuncioManager.createAnuncio(req);
 		return ResponseEntity.ok(anuncio.getId());
 	}
 	
 	@PutMapping(path = { "{idAnuncio}" })
-	@PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
+	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public ResponseEntity<Long> updateAnuncio(@Valid 
 			@PathVariable(required=true) Long idAnuncio,
 			@RequestBody AnuncioUpd upd) {
@@ -48,15 +48,16 @@ public class AnuncioAdminController {
 	
 
 	@DeleteMapping(path = { "{idAnuncio}" })
-	@PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
-	public ResponseEntity<Long> deleteCategoria(@PathVariable(required=true) Long idAnuncio) {
+	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
+	public ResponseEntity<Long> deleteCategoria(
+			@PathVariable(required=true) Long idAnuncio) {
 		anuncioManager.deleteAnuncio(idAnuncio);
 		return ResponseEntity.ok().build();
 	}
 	
 	
 	@GetMapping(path = { "{idAnuncio}" })
-	@PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
+	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public ResponseEntity<AnuncioResponse> findAnuncioById(
 			@PathVariable(required=true) Long idAnuncio) {
 		AnuncioResponse anuncio = anuncioManager.findAnuncioById(idAnuncio);
@@ -65,7 +66,7 @@ public class AnuncioAdminController {
 	
 
 	@GetMapping
-	@PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
+	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public ResponseEntity<ResponsePagedCommom<AnuncioResponse>> findAllAnuncio(
 			@Valid AnuncioFilter filtros) {
 		return ResponseEntity.ok(anuncioManager.findAllAnuncioPaged(filtros));

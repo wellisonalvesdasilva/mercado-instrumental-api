@@ -21,6 +21,7 @@ import br.com.shopdosmusicos.controller.admin.anuncio.schema.AnuncioUpd;
 import br.com.shopdosmusicos.controller.commom.schema.ResponsePagedCommom;
 import br.com.shopdosmusicos.domain.model.anuncio.Anuncio;
 import br.com.shopdosmusicos.manager.SegurancaManager;
+import br.com.shopdosmusicos.manager.exception.BusinessException;
 import br.com.shopdosmusicos.model.usuario.Usuario;
 import br.com.shopdosmusicos.repository.anuncio.AnuncioRepository;
 import jakarta.persistence.criteria.Predicate;
@@ -61,8 +62,10 @@ public class AnuncioManager {
 	
 	@Transactional
 	public Anuncio updateAnuncio(@Valid Long idAnuncio, AnuncioUpd upd) {
-	    Anuncio anuncio = anuncioRepository.findById(idAnuncio).orElseThrow();
-
+	    
+		Anuncio anuncio = anuncioRepository.findById(idAnuncio)
+				.orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
+	
 	    anuncio.setTitulo(upd.titulo());
 	    anuncio.setDescricao(upd.descricao());
 	    anuncio.setTipo(upd.tipo());
@@ -79,13 +82,19 @@ public class AnuncioManager {
 
 	@Transactional
 	public void deleteAnuncio(Long idAnuncio) {
-	    Anuncio anuncio = anuncioRepository.findById(idAnuncio).orElseThrow();
+	
+		Anuncio anuncio = anuncioRepository.findById(idAnuncio)
+				.orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
+	
 	    anuncioRepository.delete(anuncio);
 	}
 
 	
 	public AnuncioResponse findAnuncioById(Long idAnuncio) {
-	    Anuncio anuncio = anuncioRepository.findById(idAnuncio).orElseThrow();
+		
+		Anuncio anuncio = anuncioRepository.findById(idAnuncio)
+				.orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
+	
 	    return AnuncioMapper.INSTANCE.toAnuncioResponse(anuncio);
 	}
 

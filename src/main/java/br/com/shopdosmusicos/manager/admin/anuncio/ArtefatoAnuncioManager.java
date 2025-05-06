@@ -20,6 +20,7 @@ import br.com.shopdosmusicos.controller.admin.imagem.schema.ArtefatoAnuncioRespo
 import br.com.shopdosmusicos.controller.commom.schema.RwsArtefatoResponse;
 import br.com.shopdosmusicos.domain.model.anuncio.Anuncio;
 import br.com.shopdosmusicos.domain.model.anuncio.ArtefatoAnuncio;
+import br.com.shopdosmusicos.manager.exception.BusinessException;
 import br.com.shopdosmusicos.repository.anuncio.AnuncioRepository;
 import br.com.shopdosmusicos.repository.anuncio.ArtefatoAnuncioRepository;
 import jakarta.validation.constraints.NotNull;
@@ -43,9 +44,10 @@ public class ArtefatoAnuncioManager {
     @Transactional
     public ArtefatoAnuncio upload(@NotNull Long idAnuncio, @NotNull Boolean isMiniatura, @NotNull MultipartFile[] arquivos) {
         
-        Anuncio anuncio = anuncioRepository.findById(idAnuncio).orElseThrow();
-
-        if (arquivos == null || arquivos.length == 0) {
+    	Anuncio anuncio = anuncioRepository.findById(idAnuncio)
+				.orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
+	
+    	if (arquivos == null || arquivos.length == 0) {
             throw new IllegalArgumentException("Nenhum arquivo enviado.");
         }
 
@@ -83,10 +85,10 @@ public class ArtefatoAnuncioManager {
 
     public RwsArtefatoResponse download(@NotNull Long idArtefato) {
     	
-        ArtefatoAnuncio imagem = artefatoAnuncioRepository.findById(idArtefato)
-            .orElseThrow(() -> new IllegalArgumentException("Imagem não encontrada para o idArtefato: " + idArtefato));
-
-        String caminho = imagem.getSrcDocumento();
+    	ArtefatoAnuncio imagem = artefatoAnuncioRepository.findById(idArtefato)
+				.orElseThrow(BusinessException.from("Anuncio.1000", "Artefato não encontrado para o id informado."));
+	
+    	String caminho = imagem.getSrcDocumento();
         File arquivo = new File(caminho);
 
         if (!arquivo.exists()) {
@@ -109,9 +111,10 @@ public class ArtefatoAnuncioManager {
     
     public List<ArtefatoAnuncioResponse> findAllByAnuncio(Long idAnuncio) {
     	
-        Anuncio anuncio = anuncioRepository.findById(idAnuncio)
-            .orElseThrow(() -> new IllegalArgumentException("Anúncio não encontrado para o ID: " + idAnuncio));
-
+    	Anuncio anuncio = anuncioRepository.findById(idAnuncio)
+				.orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
+	
+    	
         return artefatoAnuncioRepository.findAllByAnuncio(anuncio)
             .stream()
             .map(artefato -> new ArtefatoAnuncioResponse(

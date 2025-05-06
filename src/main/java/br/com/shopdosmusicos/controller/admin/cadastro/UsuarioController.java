@@ -1,7 +1,4 @@
 package br.com.shopdosmusicos.controller.admin.cadastro;
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +14,7 @@ import br.com.shopdosmusicos.model.usuario.Usuario;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "User::Registration")
+@Tag(name = "Usuario::Cadastro")
 @RestController
 @RequestMapping("/users")
 public class UsuarioController {

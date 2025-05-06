@@ -1,6 +1,8 @@
 package br.com.shopdosmusicos.manager.site.anuncio;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +14,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import br.com.shopdosmusicos.controller.commom.manager.EnvioEmailManager;
 import br.com.shopdosmusicos.controller.commom.schema.ResponsePagedCommom;
 import br.com.shopdosmusicos.controller.schema.geral.EnumResponseMapper;
 import br.com.shopdosmusicos.controller.site.anuncio.schema.AnuncioListSiteResponse;
 import br.com.shopdosmusicos.controller.site.anuncio.schema.AnuncioSiteFilter;
 import br.com.shopdosmusicos.controller.site.anuncio.schema.AnuncioSiteResponse;
 import br.com.shopdosmusicos.controller.site.anuncio.schema.AnuncioVendedorSiteResponse;
+import br.com.shopdosmusicos.controller.site.anuncio.schema.EnvioEmailSiteReq;
 import br.com.shopdosmusicos.domain.model.anuncio.Anuncio;
 import br.com.shopdosmusicos.domain.model.anuncio.ArtefatoAnuncio;
+import br.com.shopdosmusicos.manager.exception.BusinessException;
 import br.com.shopdosmusicos.repository.anuncio.AnuncioRepository;
 import br.com.shopdosmusicos.repository.anuncio.ArtefatoAnuncioRepository;
 import jakarta.persistence.criteria.Predicate;
@@ -35,8 +40,11 @@ public class AnuncioSiteManager {
 	@Autowired
 	private ArtefatoAnuncioRepository artefatoAnuncioRepository;
 	
+	@Autowired
+	private EnvioEmailManager envioEmailManager;
 	
 	public AnuncioSiteResponse findDetailAnuncio(Anuncio anuncio) {
+		
 	    List<ArtefatoAnuncio> artefatos = artefatoAnuncioRepository.findAllByAnuncio(anuncio);
 
 	    List<String> artefatoSrcDirs = artefatos.stream()
@@ -147,6 +155,48 @@ public class AnuncioSiteManager {
 	    anuncio.incrementarQtdeAcesso();
 	    anuncioRepository.save(anuncio);
 	}
+
+
+	public void envioMensagem(@Valid EnvioEmailSiteReq req) {
+		
+	    Anuncio anuncio = anuncioRepository.findById(req.idAnuncio())
+	            .orElseThrow(() -> new BusinessException("Anuncio.1000", "Anúncio não encontrado para o id informado."));
+
+	    String corpoHtml = String.format("""
+	            <html>
+	            <body>
+	                <p>Olá, %s,</p>
+	                <p>Você tem uma nova mensagem enviada pelo site <strong>%s</strong> sobre o anúncio <strong>%s</strong>.</p>
+	                
+	                <p><strong>Informações do remetente:</strong></p>
+	                <p><strong>Nome:</strong> %s</p>
+	                <p><strong>Email:</strong> %s</p>
+	                <p><strong>WhatsApp:</strong> %s</p>
+	                
+	                <p><strong>Mensagem:</strong></p>
+	                <p>%s</p>
+	                
+	                <p><small>Data de envio: %s</small></p>
+	            </body>
+	            </html>
+	            """, 
+	            anuncio.getUsuario().getNome(), 
+	            "SIGAF",  
+	            anuncio.getTitulo(),
+	            req.nome(),
+	            req.email(),
+	            req.whatsApp(),
+	            req.mensagem(),
+	            new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date())  
+	    );
+
+	    envioEmailManager.enviarEmailHtml(
+	        List.of(anuncio.getUsuario().getEmail()),
+	        "Nova Mensagem Enviada pelo Site - " + anuncio.getTitulo(),
+	        corpoHtml
+	    );
+	}
+
 
 
 }
