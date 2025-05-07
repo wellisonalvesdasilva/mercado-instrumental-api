@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -120,11 +121,10 @@ public class AnuncioSiteManager {
 			return cb.and(condicoes.toArray(Predicate[]::new));
 		};
 
+		Pageable pageable = PageRequest.of(filtros.getPage(), filtros.getSize(), Sort.by(filtros.getDirection(), filtros.getOrdenarPor()));
 		Page<Anuncio> listaBd = anuncioRepository.findAll(
-						filtrosCustomizados, PageRequest.of(filtros.getPage(),
-						filtros.getSize(),
-						Sort.by(filtros.getDirection(),
-						filtros.getOrdenarPor())));
+						filtrosCustomizados,
+						pageable);
 		
 		listaBd.forEach(item -> {
 			ArtefatoAnuncio miniatura = artefatoAnuncioRepository.findByAnuncioAndMiniatura(item, true);

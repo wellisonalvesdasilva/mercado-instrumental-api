@@ -18,7 +18,7 @@ public class SwaggerConfig {
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("Kairux API")
+                        .title("API - Mercado Instrumental")
                         .version("1.0.0"))
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName,

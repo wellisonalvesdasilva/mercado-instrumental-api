@@ -45,9 +45,10 @@ public class Usuario implements Serializable {
 	private String whats;
 
 	@JsonIgnore
+	@Column(name = "TX_SENHA")
 	private String senha;
 
-	@Column(name = "palavra_chave_temp")
+	@Column(name = "TX_PAL_CHAVE_TEMP")
 	private String palavraChaveTemp;
 
 	@Column(name = "ativo")

@@ -13,7 +13,7 @@ import br.com.mercadoinstrumental.model.usuario.TipoPerfilEnum;
 public class UserSS implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
+	private Long id;
 	private String nome;
 	private String email;
 	private String senha;
@@ -22,7 +22,7 @@ public class UserSS implements UserDetails {
 	public UserSS() {
 	}
 
-	public UserSS(Integer id, String nome, String email, String senha, Set<TipoPerfilEnum> perfis) {
+	public UserSS(Long id, String nome, String email, String senha, Set<TipoPerfilEnum> perfis) {
 		super();
 		this.nome = nome;
 		this.id = id;
@@ -32,7 +32,7 @@ public class UserSS implements UserDetails {
 				.collect(Collectors.toList());
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
