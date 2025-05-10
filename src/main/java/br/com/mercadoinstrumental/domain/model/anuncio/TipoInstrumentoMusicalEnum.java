@@ -4,10 +4,10 @@ import br.com.mercadoinstrumental.enums.ItemValorDescricao;
 
 public enum TipoInstrumentoMusicalEnum implements ItemValorDescricao {
 
-    MADEIRAS("Avaliação"), 
-    METAIS("Ordem de Serviço"),
-    TECLADOS("Ordem de Serviço"),
-    CORDAS("Ordem de Serviço");
+    MADEIRAS("Madeiras"), 
+    METAIS("Metais"),
+    TECLADOS("Teclados"),
+    CORDAS("Cordas");
 
     private String label;
 

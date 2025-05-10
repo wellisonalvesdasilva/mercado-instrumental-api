@@ -28,7 +28,7 @@ public record AnuncioUpd(
 	    String estado,
 	    
 	    @NotNull
-	    String municio,
+	    String municipio,
 	    
 	    @NotNull
 		@Min(value = 0)

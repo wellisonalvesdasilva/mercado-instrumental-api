@@ -50,7 +50,7 @@ public class AnuncioManager {
 	        req.tipo(),
 	        req.marca(),
 	        req.estado(),
-	        req.municio(),
+	        req.municipio(),
 	        req.valor(),
 	        req.novo(),
 	        Boolean.TRUE,
@@ -71,7 +71,7 @@ public class AnuncioManager {
 	    anuncio.setDescricao(upd.descricao());
 	    anuncio.setTipo(upd.tipo());
 	    anuncio.setMarca(upd.marca());
-	    anuncio.setMunicipio(upd.municio());
+	    anuncio.setMunicipio(upd.municipio());
 	    anuncio.setEstado(upd.estado());
 	    anuncio.setValor(upd.valor());
 	    anuncio.setNovo(upd.novo());

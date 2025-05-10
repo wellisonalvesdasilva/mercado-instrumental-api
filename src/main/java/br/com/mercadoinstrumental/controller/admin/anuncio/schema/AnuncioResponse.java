@@ -7,6 +7,8 @@ import br.com.mercadoinstrumental.controller.schema.geral.EnumResponse;
 
 public record AnuncioResponse(
 
+		Long id,
+		
 		String titulo,
 
 		String descricao,
@@ -15,7 +17,9 @@ public record AnuncioResponse(
 
 		EnumResponse marca,
 
-		Long idMunicipioIbge,
+		String estado,
+		
+		String municipio,
 
 		BigDecimal valor,
 

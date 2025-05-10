@@ -100,6 +100,7 @@ public class Anuncio {
 		this.ativo = ativo;
 		this.dataHoraPublicacao = LocalDateTime.now();
 		this.usuario = usuario;
+		this.quantidadeAcesso = 0L;
 	}
 
 	public Long getId() {
