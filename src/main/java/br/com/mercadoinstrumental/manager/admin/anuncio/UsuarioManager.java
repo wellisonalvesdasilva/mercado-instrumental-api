@@ -40,9 +40,9 @@ public class UsuarioManager {
     }
 
     @Transactional
-    public void activeUser(String email, String palavraChave) {
-        Usuario usuario = findUsuarioByEmail(email);
-        if (usuario.getPalavraChaveTemp().equals(palavraChave)) {
+    public void activeUser(String palavraChave) {
+        Usuario usuario = findByPalavraChaveTemp(palavraChave);
+        if (usuario != null) {
             usuario.setAtivo(true);
             usuario.setPalavraChaveTemp(null);
             usuarioRepository.save(usuario);
@@ -60,9 +60,9 @@ public class UsuarioManager {
     }
 
     @Transactional
-    public void confirmPasswordRecovery(String email, String newPassword, String palavraPasse) {
-        Usuario usuario = findUsuarioByEmail(email);
-        if (usuario.getPalavraChaveTemp().equals(palavraPasse)) {
+    public void confirmPasswordRecovery(String newPassword, String palavraPasse) {
+        Usuario usuario = findByPalavraChaveTemp(palavraPasse);
+        if (usuario != null) {
             usuario.setSenha(newPassword);
             usuario.setPalavraChaveTemp(null);
             usuarioRepository.save(usuario);
@@ -76,8 +76,13 @@ public class UsuarioManager {
     }
 
     private Usuario findUsuarioByEmail(String email) {
-        return usuarioRepository.findByEmail(email)
+        return usuarioRepository.findByEmailAndAtivo(email, true)
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado para o e-mail informado."));
+    }
+    
+    private Usuario findByPalavraChaveTemp(String palavraPasse) {
+        return usuarioRepository.findByPalavraChaveTemp(palavraPasse)
+                .orElseThrow(() -> new BusinessException("Usuário não encontrado para a palavra passe informada."));
     }
 
     private void sendActivationEmail(Usuario usuario) {
@@ -87,7 +92,7 @@ public class UsuarioManager {
                     <p>Olá, %s,</p>
                     <p>Obrigado por se registrar no <strong>%s</strong>! Estamos felizes em tê-lo conosco.</p>
                     <p>Para concluir o seu cadastro, ative sua conta clicando no link abaixo:</p>
-                    <p><a href="%s?chave=%s" target="_blank">%s?chave=%s</a></p>
+                    <p><a href="%s/account/login/%s" target="_blank">%s/account/login/%s</a></p>
                     <p><small>Data da solicitação: %s</small></p>
                 </body>
                 </html>
@@ -108,9 +113,9 @@ public class UsuarioManager {
                 <html>
                 <body>
                     <p>Olá, %s,</p>
-                    <p>Para redefinir a senha do e-mail <strong>%s</strong>, acesse o link abaixo e informe a palavra-passe:</p>
+                    <p>Para redefinir a senha do e-mail <strong>%s</strong>, acesse o link abaixo:</p>
                     <p><strong>Palavra-passe:</strong> %s</p>
-                    <p><strong>Link:</strong> <a href="%s?email=%s" target="_blank">%s?chave=%s</a></p>
+                    <p><strong>Link:</strong> <a href="%s/account/recuperacao-senha/%s" target="_blank">%s/account/recuperacao-senha/%s</a></p>
                     <p>Caso não tenha solicitado, ignore este e-mail.</p>
                     <p><small>%s</small></p>
                 </body>
@@ -120,7 +125,7 @@ public class UsuarioManager {
                 usuario.getEmail(),
                 usuario.getPalavraChaveTemp(),
                 urlBase,
-                usuario.getEmail(),
+                usuario.getPalavraChaveTemp(),
                 urlBase,
                 usuario.getPalavraChaveTemp(),
                 new SimpleDateFormat(DATA_FORMAT).format(new Date())

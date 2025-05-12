@@ -17,6 +17,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	Boolean existsByEmail(String email);
 	
 	@Transactional(readOnly=true)
-	Optional<Usuario> findByEmail(String email);
+	Optional<Usuario> findByEmailAndAtivo(String email, Boolean ativo);
+	
+	
+	Optional<Usuario> findByPalavraChaveTemp(String palavraPasse);
 	
 }

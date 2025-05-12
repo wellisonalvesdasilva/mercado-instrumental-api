@@ -1,4 +1,6 @@
 package br.com.mercadoinstrumental.controller.admin.cadastro;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,38 +18,36 @@ import jakarta.validation.Valid;
 
 @Tag(name = "Usuario::Cadastro")
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     @Autowired
     private UsuarioManager usuarioManager;
 
     @PostMapping
-    public ResponseEntity<Long> createUser(@Valid @RequestBody UsuarioReq request) {
+    public ResponseEntity<Long> createUser(@Valid @RequestBody UsuarioReq request) throws IOException {
         Usuario usuario = usuarioManager.createUsuario(request);
         return ResponseEntity.ok(usuario.getId());
     }
 
-    @PostMapping("/activate/{email}")
+    @PostMapping("/activate/{palavraChave}")
     public ResponseEntity<Void> activateUser(
-            @PathVariable String email,
-            @RequestParam String keyword) {
-        usuarioManager.activeUser(email, keyword);
+            @PathVariable String palavraChave) {
+        usuarioManager.activeUser(palavraChave);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/password-recovery/request/{email}")
+    @PostMapping("/recuperacao-de-senha/pedido/{email}")
     public ResponseEntity<Void> requestPasswordRecovery(@PathVariable String email) {
         usuarioManager.requestPasswordRecovery(email);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/password-recovery/confirm/{email}")
+    @PostMapping("/confirmacao-recuperacao-senha")
     public ResponseEntity<Void> confirmPasswordRecovery(
-    		@PathVariable String email,
-    		@RequestParam String newPassword,
+    		@RequestParam String senha,
     		@RequestParam String palavraPasse) {
-        usuarioManager.confirmPasswordRecovery(email, newPassword, palavraPasse);
+        usuarioManager.confirmPasswordRecovery(senha, palavraPasse);
         return ResponseEntity.ok().build();
     }
 

@@ -22,7 +22,7 @@ public class SegurancaManager {
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserSS) {
             UserSS userSS = (UserSS) authentication.getPrincipal();
-            return usuarioRepository.findByEmail(userSS.getUsername()).orElse(null);
+            return usuarioRepository.findByEmailAndAtivo(userSS.getUsername(), true).orElse(null);
         }
         
         return null;

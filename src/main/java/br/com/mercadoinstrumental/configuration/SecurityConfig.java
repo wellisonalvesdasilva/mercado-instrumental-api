@@ -59,6 +59,8 @@ public class SecurityConfig {
     private static final String[] PUBLIC_MATCHERS_DELETE = { };
     private static final String[] PUBLIC_MATCHERS_POST = {
         "/auth",
+        "/usuarios/*",
+        "/usuarios/**",
         "/auth/forgot/**"
     };
 

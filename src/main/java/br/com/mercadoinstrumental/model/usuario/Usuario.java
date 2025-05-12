@@ -41,7 +41,7 @@ public class Usuario implements Serializable {
 	private String email;
 
 	@NotNull
-	@Column(name = "NU_WHATSAPP", unique = true)
+	@Column(name = "NU_WHATSAPP")
 	private String whats;
 
 	@JsonIgnore
