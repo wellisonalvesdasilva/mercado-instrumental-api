@@ -28,6 +28,10 @@ public class ArtefatoAnuncio {
 	private Anuncio anuncio;
 
 	@NotNull
+	@Column(name = "NU_ARTEFATO")
+	private Integer numero;
+
+	@NotNull
 	@Lob
 	@Column(name = "SRC_DIR")
 	private String srcDocumento;
@@ -36,15 +40,23 @@ public class ArtefatoAnuncio {
 	@Column(name = "IN_MINIATURA", nullable = false)
 	private Boolean miniatura;
 
-	@NotNull
 	@Column(name = "DH_UPLOAD")
 	private LocalDateTime dataHoraUpload;
 
+	public ArtefatoAnuncio() {}
+	
 	public ArtefatoAnuncio(@NotNull Anuncio anuncio, @NotNull String srcDocumento, @NotNull Boolean miniatura) {
 		this.anuncio = anuncio;
 		this.srcDocumento = srcDocumento;
 		this.miniatura = miniatura;
 		this.dataHoraUpload = LocalDateTime.now();
+	}
+
+	public ArtefatoAnuncio(Anuncio anuncio, Boolean miniatura, Integer numero) {
+		this.anuncio = anuncio;
+		this.miniatura = miniatura;
+		this.numero = numero;
+		this.srcDocumento = "";
 	}
 
 	public Long getId() {
@@ -87,4 +99,13 @@ public class ArtefatoAnuncio {
 		this.dataHoraUpload = dataHoraUpload;
 	}
 
+	public Integer getNumero() {
+		return numero;
+	}
+
+	public void setNumero(Integer numero) {
+		this.numero = numero;
+	}
+
+	
 }

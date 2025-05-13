@@ -11,15 +11,11 @@ import br.com.mercadoinstrumental.model.usuario.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	
-	//@Transactional(readOnly=true)
-	//Usuario findByEmail(String email);
-	
 	Boolean existsByEmail(String email);
 	
 	@Transactional(readOnly=true)
 	Optional<Usuario> findByEmailAndAtivo(String email, Boolean ativo);
-	
-	
+		
 	Optional<Usuario> findByPalavraChaveTemp(String palavraPasse);
 	
 }

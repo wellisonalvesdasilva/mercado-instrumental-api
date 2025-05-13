@@ -1,12 +1,10 @@
 package br.com.mercadoinstrumental.controller.admin.imagem.schema;
 
-import java.time.LocalDate;
-
 public record ArtefatoAnuncioResponse(
 		
-		Long idArtefato,
+		Integer numero,
 		
-		LocalDate dataUpload,
+		Long idArtefato,
 		
 		String srcDir
 		

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.mercadoinstrumental.controller.admin.usuario.schema.UsuarioReq;
 import br.com.mercadoinstrumental.controller.commom.manager.EnvioEmailManager;
+import br.com.mercadoinstrumental.domain.model.anuncio.Anuncio;
 import br.com.mercadoinstrumental.manager.exception.BusinessException;
 import br.com.mercadoinstrumental.model.usuario.Usuario;
 import br.com.mercadoinstrumental.usuario.repository.UsuarioRepository;
@@ -132,4 +133,15 @@ public class UsuarioManager {
         );
         envioEmailManager.enviarEmailHtml(List.of(usuario.getEmail()), "Recuperação de Senha", corpo);
     }
+
+    
+    @Transactional
+	public void confirmPasswordChange(Integer idUsuario, String senha) {
+    	
+    	Usuario usuario = usuarioRepository.findById(idUsuario)
+				.orElseThrow(BusinessException.from("Usuario.1000", "Usuario não encontrado para o id informado."));
+    	
+    	usuario.setSenha(senha);
+    	usuarioRepository.save(usuario);
+	}
 }

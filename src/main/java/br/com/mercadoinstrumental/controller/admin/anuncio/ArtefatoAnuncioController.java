@@ -23,7 +23,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Tag(name = "Anuncio::ImagemAnuncio")
 @RestController
-@RequestMapping("imagens-anuncio")
+@RequestMapping("imagens")
 public class ArtefatoAnuncioController {
 
 
@@ -38,13 +38,12 @@ public class ArtefatoAnuncioController {
         return ResponseEntity.ok(artefatoAnuncioManager.findAllByAnuncio(idAnuncio));
     }
     
-	@PostMapping(path = "{idAnuncio}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(path = "{idArtefato}/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public ResponseEntity<Long> uploadArtefato(
-			@PathVariable @NotNull Long idAnuncio,
-			@RequestParam @NotNull MultipartFile[] arquivo,
-			@RequestParam @NotNull Boolean isMiniatura) {
-		ArtefatoAnuncio imagemAnuncio = artefatoAnuncioManager.upload(idAnuncio, isMiniatura, arquivo);
+			@PathVariable @NotNull Long idArtefato,
+			@RequestParam @NotNull MultipartFile arquivo) {
+		ArtefatoAnuncio imagemAnuncio = artefatoAnuncioManager.upload(idArtefato, arquivo);
 		return ResponseEntity.ok(imagemAnuncio.getId());
 	}
 	    

@@ -42,16 +42,15 @@ public class ArtefatoAnuncioManager {
     
 
     @Transactional
-    public ArtefatoAnuncio upload(@NotNull Long idAnuncio, @NotNull Boolean isMiniatura, @NotNull MultipartFile[] arquivos) {
+    public ArtefatoAnuncio upload(@NotNull Long idArtefato, @NotNull MultipartFile arquivo) {
         
-    	Anuncio anuncio = anuncioRepository.findById(idAnuncio)
-				.orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
+    	ArtefatoAnuncio artefato = artefatoAnuncioRepository.findById(idArtefato)
+				.orElseThrow(BusinessException.from("Anuncio.1000", "ArtefatoAnuncio não encontrado para o id informado."));
 	
-    	if (arquivos == null || arquivos.length == 0) {
+    	if (arquivo == null) {
             throw new IllegalArgumentException("Nenhum arquivo enviado.");
         }
 
-        MultipartFile arquivo = arquivos[0];
         if (arquivo.isEmpty()) {
             throw new IllegalArgumentException("Arquivo vazio.");
         }
@@ -64,7 +63,7 @@ public class ArtefatoAnuncioManager {
 
             Path caminhoArquivo = diretorioPath.resolve(nomeArquivo);
 
-            if (Boolean.TRUE.equals(isMiniatura)) {
+            if (Boolean.TRUE.equals(artefato.getMiniatura())) {
                 Thumbnails.of(arquivo.getInputStream())
                           .size(200, 200)
                           .toFile(caminhoArquivo.toFile());
@@ -73,9 +72,9 @@ public class ArtefatoAnuncioManager {
             }
 
             String srcDir = diretorioUpload + "/" + nomeArquivo;
-            ArtefatoAnuncio imagemAnuncio = new ArtefatoAnuncio(anuncio, srcDir, isMiniatura);
-
-            return artefatoAnuncioRepository.save(imagemAnuncio);
+            
+            artefato.setSrcDocumento(srcDir);
+            return artefatoAnuncioRepository.save(artefato);
 
         } catch (IOException e) {
             throw new RuntimeException("Erro ao salvar arquivo", e);
@@ -118,8 +117,8 @@ public class ArtefatoAnuncioManager {
         return artefatoAnuncioRepository.findAllByAnuncio(anuncio)
             .stream()
             .map(artefato -> new ArtefatoAnuncioResponse(
+          		artefato.getNumero(),
                 artefato.getId(),
-                artefato.getDataHoraUpload().toLocalDate(),
                 artefato.getSrcDocumento()))
             .toList();
     }

@@ -50,5 +50,14 @@ public class UsuarioController {
         usuarioManager.confirmPasswordRecovery(senha, palavraPasse);
         return ResponseEntity.ok().build();
     }
+    
+    @PostMapping("/alteracao-senha/{idUsuario}")
+    public ResponseEntity<Void> confirmPasswordAlter(
+    		@PathVariable Integer idUsuario,
+    		@RequestParam String senha) {
+        usuarioManager.confirmPasswordChange(idUsuario, senha);
+        return ResponseEntity.ok().build();
+    }
+
 
   }

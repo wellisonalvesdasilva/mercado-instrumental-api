@@ -21,10 +21,12 @@ import br.com.mercadoinstrumental.controller.admin.anuncio.schema.AnuncioRespons
 import br.com.mercadoinstrumental.controller.admin.anuncio.schema.AnuncioUpd;
 import br.com.mercadoinstrumental.controller.commom.schema.ResponsePagedCommom;
 import br.com.mercadoinstrumental.domain.model.anuncio.Anuncio;
+import br.com.mercadoinstrumental.domain.model.anuncio.ArtefatoAnuncio;
 import br.com.mercadoinstrumental.manager.SegurancaManager;
 import br.com.mercadoinstrumental.manager.exception.BusinessException;
 import br.com.mercadoinstrumental.model.usuario.Usuario;
 import br.com.mercadoinstrumental.repository.anuncio.AnuncioRepository;
+import br.com.mercadoinstrumental.repository.anuncio.ArtefatoAnuncioRepository;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.validation.Valid;
 
@@ -38,6 +40,8 @@ public class AnuncioManager {
 	@Autowired
 	private AnuncioRepository anuncioRepository;
 
+	@Autowired
+	private ArtefatoAnuncioRepository artefatoAnuncioRepository;
 	
 	@Transactional
 	public Anuncio createAnuncio(@Valid AnuncioReq req) {
@@ -57,10 +61,13 @@ public class AnuncioManager {
 	        usuarioLogado
 	    );
 
-	    return anuncioRepository.save(anuncio);
+	    anuncio = anuncioRepository.save(anuncio);
+	    criarArtefatosRascunho(anuncio);
+	    
+	    return anuncio;
 	}
 
-	
+
 	@Transactional
 	public Anuncio updateAnuncio(@Valid Long idAnuncio, AnuncioUpd upd) {
 	    
@@ -163,6 +170,14 @@ public class AnuncioManager {
 				filtros.getPage());
 
 	}
+	
+	
+	private void criarArtefatosRascunho(Anuncio anuncio) {
+	    for (int i = 0; i < 5; i++) {
+	    	artefatoAnuncioRepository.save(new ArtefatoAnuncio(anuncio, i == 0, i + 1));
+	    }
+	}
+
 
 
 }
