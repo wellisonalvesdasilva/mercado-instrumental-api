@@ -27,7 +27,9 @@ public record AnuncioResponse(
 		
 		Boolean ativo,
 		
-		LocalDate dataPublicacao
+		LocalDate dataPublicacao,
+		
+		EnumResponse status
 
 ) {
 

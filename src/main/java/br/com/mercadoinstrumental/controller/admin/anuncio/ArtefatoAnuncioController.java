@@ -48,7 +48,7 @@ public class ArtefatoAnuncioController {
 	}
 	    
 	
-    @PostMapping(path = "{idAnuncio}/download/{idArtefato}")
+    @PostMapping(path = "{idArtefato}/download")
 	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
     public ResponseEntity<RwsArtefatoResponse> downloadArtefato(@PathVariable @NotNull Long idArtefato) {
         return ResponseEntity.ok(artefatoAnuncioManager.download(idArtefato));

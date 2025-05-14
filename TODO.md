@@ -1,11 +1,9 @@
 Falta:
 
-Visualizar Imagem e status do anuncio.
-Listagem
-Tela de alteracao de senha e inclusão de foto
 
+Exceptions e loader - Quarta.
+Tela de alteracao de senha e inclusão de foto - Quarta.
+Listagem - Quinta.
 
-Exceptions (Tratamentos)
-Loader
-Site
+Site - Fim de semana.
 

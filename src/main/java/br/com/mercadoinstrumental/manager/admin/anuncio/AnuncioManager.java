@@ -22,6 +22,7 @@ import br.com.mercadoinstrumental.controller.admin.anuncio.schema.AnuncioUpd;
 import br.com.mercadoinstrumental.controller.commom.schema.ResponsePagedCommom;
 import br.com.mercadoinstrumental.domain.model.anuncio.Anuncio;
 import br.com.mercadoinstrumental.domain.model.anuncio.ArtefatoAnuncio;
+import br.com.mercadoinstrumental.domain.model.anuncio.StatusAnuncioEnum;
 import br.com.mercadoinstrumental.manager.SegurancaManager;
 import br.com.mercadoinstrumental.manager.exception.BusinessException;
 import br.com.mercadoinstrumental.model.usuario.Usuario;
@@ -82,12 +83,16 @@ public class AnuncioManager {
 	    anuncio.setEstado(upd.estado());
 	    anuncio.setValor(upd.valor());
 	    anuncio.setNovo(upd.novo());
-
+	    anuncio.setStatus(upd.isPublicacao() ? StatusAnuncioEnum.PUBLICADO : StatusAnuncioEnum.RASCUNHO);
+	    
+	    if (upd.isPublicacao()) {
+	    	validarAntesDePublicar(anuncio);
+	    }
+	    
 	    return anuncioRepository.save(anuncio);
 	}
 
 	
-
 	@Transactional
 	public void deleteAnuncio(Long idAnuncio) {
 	
@@ -175,6 +180,15 @@ public class AnuncioManager {
 	private void criarArtefatosRascunho(Anuncio anuncio) {
 	    for (int i = 0; i < 5; i++) {
 	    	artefatoAnuncioRepository.save(new ArtefatoAnuncio(anuncio, i == 0, i + 1));
+	    }
+	}
+	
+	
+	private void validarAntesDePublicar(Anuncio anuncio) {
+	    boolean possuiImagemNaoEnviada = artefatoAnuncioRepository.existsByAnuncioAndSrcDocumentoIsNull(anuncio);
+
+	    if (possuiImagemNaoEnviada) {
+	        throw new BusinessException("Existem imagens que ainda não foram enviadas. Verifique antes de publicar o anúncio.");
 	    }
 	}
 

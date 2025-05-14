@@ -31,8 +31,6 @@ public class ArtefatoAnuncio {
 	@Column(name = "NU_ARTEFATO")
 	private Integer numero;
 
-	@NotNull
-	@Lob
 	@Column(name = "SRC_DIR")
 	private String srcDocumento;
 
@@ -56,7 +54,6 @@ public class ArtefatoAnuncio {
 		this.anuncio = anuncio;
 		this.miniatura = miniatura;
 		this.numero = numero;
-		this.srcDocumento = "";
 	}
 
 	public Long getId() {

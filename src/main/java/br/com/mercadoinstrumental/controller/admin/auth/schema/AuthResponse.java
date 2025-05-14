@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 public record AuthResponse(
 		
 		String usuario,
-		
+				
 		String token,
 		
 		Collection<? extends GrantedAuthority> perfis

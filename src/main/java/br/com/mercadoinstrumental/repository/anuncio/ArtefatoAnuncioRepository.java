@@ -13,4 +13,5 @@ public interface ArtefatoAnuncioRepository extends JpaRepository<ArtefatoAnuncio
 	
 	ArtefatoAnuncio findByAnuncioAndMiniatura(Anuncio anuncio, Boolean miniatura);
 
+	Boolean existsByAnuncioAndSrcDocumentoIsNull(Anuncio anuncio);
 }

@@ -2,21 +2,14 @@ package br.com.mercadoinstrumental.domain.model.anuncio;
 
 import br.com.mercadoinstrumental.enums.ItemValorDescricao;
 
-public enum MarcaInstrumentoMusicalEnum implements ItemValorDescricao {
+public enum StatusAnuncioEnum implements ItemValorDescricao {
 
-	WERIL("Weril"),
-	YAMAHA("Yamaha"),
-	SELMER("Semler"),
-	BACH("Bach"),
-	GETZEN("Getzen"),
-	JUPITER("Jupiter"),
-	KING("King"),
-	P_MAURIAT("P. Mauriat"),
-	OUTRA("Outra");
+	RASCUNHO("Rascunho"),
+	PUBLICADO("Publicado");
 	
     private String label;
 
-	private MarcaInstrumentoMusicalEnum(String label) {
+	private StatusAnuncioEnum(String label) {
 		this.label = label;
 	}
 

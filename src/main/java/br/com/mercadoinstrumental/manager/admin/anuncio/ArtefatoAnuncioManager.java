@@ -1,13 +1,17 @@
 package br.com.mercadoinstrumental.manager.admin.anuncio;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,11 +47,8 @@ public class ArtefatoAnuncioManager {
 
     @Transactional
     public ArtefatoAnuncio upload(@NotNull Long idArtefato, @NotNull MultipartFile arquivo) {
-        
-    	ArtefatoAnuncio artefato = artefatoAnuncioRepository.findById(idArtefato)
-				.orElseThrow(BusinessException.from("Anuncio.1000", "ArtefatoAnuncio não encontrado para o id informado."));
-	
-    	if (arquivo == null) {
+
+        if (arquivo == null) {
             throw new IllegalArgumentException("Nenhum arquivo enviado.");
         }
 
@@ -55,31 +56,89 @@ public class ArtefatoAnuncioManager {
             throw new IllegalArgumentException("Arquivo vazio.");
         }
 
+        String contentType = arquivo.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new IllegalArgumentException("O arquivo não é uma imagem válida.");
+        }
+
+        ArtefatoAnuncio artefato = artefatoAnuncioRepository.findById(idArtefato)
+                .orElseThrow(() -> new BusinessException("Anuncio.1000", "ArtefatoAnuncio não encontrado para o id informado."));
+
         try {
+
+            if (artefato.getSrcDocumento() != null && !artefato.getSrcDocumento().isEmpty()) {
+                Path caminhoArquivoAntigo = Paths.get(artefato.getSrcDocumento());
+                try {
+                    Files.deleteIfExists(caminhoArquivoAntigo);
+                } catch (IOException e) {
+                    throw new RuntimeException("Erro ao excluir arquivo antigo.", e);
+                }
+            }
+
             String nomeOriginal = arquivo.getOriginalFilename();
+            if (nomeOriginal == null) {
+                throw new IllegalArgumentException("Nome do arquivo não encontrado.");
+            }
+
             String nomeArquivo = UUID.randomUUID() + "_" + nomeOriginal;
             Path diretorioPath = Paths.get(diretorioUpload);
             Files.createDirectories(diretorioPath);
 
             Path caminhoArquivo = diretorioPath.resolve(nomeArquivo);
 
-            if (Boolean.TRUE.equals(artefato.getMiniatura())) {
-                Thumbnails.of(arquivo.getInputStream())
-                          .size(200, 200)
-                          .toFile(caminhoArquivo.toFile());
-            } else {
-                arquivo.transferTo(caminhoArquivo.toFile());
-            }
+            try (InputStream inputStream = arquivo.getInputStream()) {
+                BufferedImage imagemOriginal = ImageIO.read(inputStream);
+                if (imagemOriginal == null) {
+                    throw new IllegalArgumentException("Arquivo enviado não é uma imagem válida.");
+                }
 
-            String srcDir = diretorioUpload + "/" + nomeArquivo;
-            
-            artefato.setSrcDocumento(srcDir);
-            return artefatoAnuncioRepository.save(artefato);
+                int larguraOriginal = imagemOriginal.getWidth();
+                int alturaOriginal = imagemOriginal.getHeight();
+
+                if (larguraOriginal < 740 || alturaOriginal < 540) {
+                    throw new IllegalArgumentException("A imagem precisa ter pelo menos 740x540 pixels.");
+                }
+
+                int larguraDesejada = 740;
+                int alturaDesejada = 540;
+                
+                if (Boolean.TRUE.equals(artefato.getMiniatura())) {
+                    try {
+                        Thumbnails.of(imagemOriginal)
+                                .size(250, 200)
+                                .keepAspectRatio(true)
+                                .toFile(caminhoArquivo.toFile());
+                    } catch (IOException e) {
+                        throw new RuntimeException("Erro ao gerar miniatura", e);
+                    }
+                } else {
+                    try {
+                        Thumbnails.of(imagemOriginal)
+                                .size(larguraDesejada, alturaDesejada)
+                                .keepAspectRatio(true)
+                                .toFile(caminhoArquivo.toFile());
+                    } catch (IOException e) {
+                        throw new RuntimeException("Erro ao redimensionar imagem", e);
+                    }
+                }
+
+                String srcDir = diretorioUpload + "/" + nomeArquivo;
+                artefato.setSrcDocumento(srcDir);
+
+                return artefatoAnuncioRepository.save(artefato);
+
+            } catch (IOException e) {
+                throw new RuntimeException("Erro ao processar a imagem", e);
+            }
 
         } catch (IOException e) {
             throw new RuntimeException("Erro ao salvar arquivo", e);
         }
     }
+
+
+
+
 
 
     public RwsArtefatoResponse download(@NotNull Long idArtefato) {

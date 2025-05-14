@@ -59,10 +59,6 @@ public class Anuncio {
 	private Boolean novo;
 
 	@NotNull
-	@Column(name = "IN_ATIVO")
-	private Boolean ativo;
-
-	@NotNull
 	@Column(name = "DH_PUBLICACAO")
 	private LocalDateTime dataHoraPublicacao;
 
@@ -75,19 +71,16 @@ public class Anuncio {
 	@JoinColumn(name = "ID_USUARIO")
 	private Usuario usuario;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "EN_STATUS")
+	private StatusAnuncioEnum status;
+
 	public Anuncio() {
 	}
 
-	public Anuncio(
-			@NotNull @Size(max = 100) String titulo,
-			@Size(max = 4000) String descricao,
-			TipoInstrumentoMusicalEnum tipo,
-			MarcaInstrumentoMusicalEnum marca,
-			@NotNull String estado,
-			@NotNull String municipio,
-			BigDecimal valor,
-			@NotNull Boolean novo,
-			@NotNull Boolean ativo,
+	public Anuncio(@NotNull @Size(max = 100) String titulo, @Size(max = 4000) String descricao,
+			TipoInstrumentoMusicalEnum tipo, MarcaInstrumentoMusicalEnum marca, @NotNull String estado,
+			@NotNull String municipio, BigDecimal valor, @NotNull Boolean novo, @NotNull Boolean ativo,
 			@NotNull Usuario usuario) {
 		this.titulo = titulo;
 		this.descricao = descricao;
@@ -97,10 +90,10 @@ public class Anuncio {
 		this.municipio = municipio;
 		this.valor = valor;
 		this.novo = novo;
-		this.ativo = ativo;
 		this.dataHoraPublicacao = LocalDateTime.now();
 		this.usuario = usuario;
 		this.quantidadeAcesso = 0L;
+		this.status = StatusAnuncioEnum.RASCUNHO;
 	}
 
 	public Long getId() {
@@ -175,14 +168,6 @@ public class Anuncio {
 		this.novo = novo;
 	}
 
-	public Boolean getAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
-	}
-
 	public LocalDateTime getDataHoraPublicacao() {
 		return dataHoraPublicacao;
 	}
@@ -206,9 +191,17 @@ public class Anuncio {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-	
+
 	public void incrementarQtdeAcesso() {
 		this.quantidadeAcesso = this.quantidadeAcesso + 1;
+	}
+
+	public StatusAnuncioEnum getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusAnuncioEnum status) {
+		this.status = status;
 	}
 
 }

@@ -35,7 +35,10 @@ public record AnuncioUpd(
 		BigDecimal valor,
 
 		@NotNull
-		Boolean novo
+		Boolean novo,
+		
+		@NotNull
+		Boolean isPublicacao
 
 ) {
 
