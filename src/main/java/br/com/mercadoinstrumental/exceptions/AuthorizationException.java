@@ -1,4 +1,4 @@
-package br.com.mercadoinstrumental.manager.exception;
+package br.com.mercadoinstrumental.exceptions;
 
 public class AuthorizationException extends RuntimeException {
 

@@ -25,7 +25,7 @@ import br.com.mercadoinstrumental.controller.site.anuncio.schema.AnuncioVendedor
 import br.com.mercadoinstrumental.controller.site.anuncio.schema.EnvioEmailSiteReq;
 import br.com.mercadoinstrumental.domain.model.anuncio.Anuncio;
 import br.com.mercadoinstrumental.domain.model.anuncio.ArtefatoAnuncio;
-import br.com.mercadoinstrumental.manager.exception.BusinessException;
+import br.com.mercadoinstrumental.exceptions.BusinessException;
 import br.com.mercadoinstrumental.repository.anuncio.AnuncioRepository;
 import br.com.mercadoinstrumental.repository.anuncio.ArtefatoAnuncioRepository;
 import jakarta.persistence.criteria.Predicate;

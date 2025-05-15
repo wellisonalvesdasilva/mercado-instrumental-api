@@ -1,4 +1,4 @@
-package br.com.mercadoinstrumental.manager.exception;
+package br.com.mercadoinstrumental.exceptions;
 
 import java.util.function.Supplier;
 

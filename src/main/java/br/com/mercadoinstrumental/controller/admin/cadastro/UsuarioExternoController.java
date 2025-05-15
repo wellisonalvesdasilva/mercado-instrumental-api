@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 @Tag(name = "Usuario::Cadastro")
 @RestController
 @RequestMapping("/usuarios")
-public class UsuarioController {
+public class UsuarioExternoController {
 
     @Autowired
     private UsuarioManager usuarioManager;
@@ -58,6 +58,5 @@ public class UsuarioController {
         usuarioManager.confirmPasswordChange(idUsuario, senha);
         return ResponseEntity.ok().build();
     }
-
 
   }

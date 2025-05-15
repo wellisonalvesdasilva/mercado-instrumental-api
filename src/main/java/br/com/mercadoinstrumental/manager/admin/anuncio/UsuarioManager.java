@@ -6,13 +6,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.mercadoinstrumental.controller.admin.usuario.schema.UsuarioAlteracaoSenhaResponse;
 import br.com.mercadoinstrumental.controller.admin.usuario.schema.UsuarioReq;
 import br.com.mercadoinstrumental.controller.commom.manager.EnvioEmailManager;
-import br.com.mercadoinstrumental.domain.model.anuncio.Anuncio;
-import br.com.mercadoinstrumental.manager.exception.BusinessException;
+import br.com.mercadoinstrumental.exceptions.BusinessException;
+import br.com.mercadoinstrumental.manager.SegurancaManager;
 import br.com.mercadoinstrumental.model.usuario.Usuario;
 import br.com.mercadoinstrumental.usuario.repository.UsuarioRepository;
 import jakarta.validation.Valid;
@@ -26,6 +28,9 @@ public class UsuarioManager {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private SegurancaManager segurancaManager;
+    
     @Value("${aplicacao-web}")
     public String urlBase;
 
@@ -144,4 +149,33 @@ public class UsuarioManager {
     	usuario.setSenha(senha);
     	usuarioRepository.save(usuario);
 	}
+
+    
+    public UsuarioAlteracaoSenhaResponse buscarDadosUsuarioLogado() {
+        Usuario usuarioLogado = segurancaManager.obterUsuarioLogado();
+        return new UsuarioAlteracaoSenhaResponse(
+            usuarioLogado.getId(),
+            usuarioLogado.getNome(),
+            usuarioLogado.getEmail(),
+            usuarioLogado.getWhats()
+        );
+    }
+
+    
+   
+    @Transactional
+    public void alterarSenha(String senhaAtual, String novaSenha) {
+       
+    	Usuario usuarioLogado = segurancaManager.obterUsuarioLogado();
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (!passwordEncoder.matches(senhaAtual, usuarioLogado.getSenha())) {
+            throw new BusinessException("A senha atual informada não confere!");
+        }
+
+        usuarioLogado.setSenha(novaSenha);
+        usuarioRepository.save(usuarioLogado);
+    }
+
+    
 }

@@ -19,7 +19,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 	     res.setContentType("application/json;charset=UTF-8");
 	     res.setStatus(HttpStatus.UNAUTHORIZED.value());
 	     ObjectMapper mapper = new ObjectMapper();
-	     res.getWriter().write(mapper.writeValueAsString(new Error("Usuário e/ou senha inválidos")
+	     res.getWriter().write(mapper.writeValueAsString(new Error("Usuário e/ou senha inválidos!")
 	     ));
 	 }
 }

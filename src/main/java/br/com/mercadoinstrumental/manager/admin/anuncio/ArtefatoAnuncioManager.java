@@ -24,7 +24,7 @@ import br.com.mercadoinstrumental.controller.admin.imagem.schema.ArtefatoAnuncio
 import br.com.mercadoinstrumental.controller.commom.schema.RwsArtefatoResponse;
 import br.com.mercadoinstrumental.domain.model.anuncio.Anuncio;
 import br.com.mercadoinstrumental.domain.model.anuncio.ArtefatoAnuncio;
-import br.com.mercadoinstrumental.manager.exception.BusinessException;
+import br.com.mercadoinstrumental.exceptions.BusinessException;
 import br.com.mercadoinstrumental.repository.anuncio.AnuncioRepository;
 import br.com.mercadoinstrumental.repository.anuncio.ArtefatoAnuncioRepository;
 import jakarta.validation.constraints.NotNull;

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.mercadoinstrumental.controller.admin.auth.schema.AuthResponse;
 import br.com.mercadoinstrumental.controller.admin.auth.schema.LoginReq;
 import br.com.mercadoinstrumental.controller.admin.auth.schema.ProfileResponse;
-import br.com.mercadoinstrumental.manager.exception.AuthorizationException;
+import br.com.mercadoinstrumental.exceptions.AuthorizationException;
 import br.com.mercadoinstrumental.model.usuario.TipoPerfilEnum;
 import br.com.mercadoinstrumental.security.AuthService;
 import br.com.mercadoinstrumental.security.EmailDTO;
