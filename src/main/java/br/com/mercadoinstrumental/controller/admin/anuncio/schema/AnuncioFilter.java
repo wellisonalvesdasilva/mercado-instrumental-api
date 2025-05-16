@@ -9,6 +9,7 @@ import br.com.mercadoinstrumental.domain.model.anuncio.TipoInstrumentoMusicalEnu
 
 public class AnuncioFilter extends FilterPageable {
 
+	private Long id;
 	private String titulo;
 	private TipoInstrumentoMusicalEnum tipo;
 	private MarcaInstrumentoMusicalEnum marca;
@@ -89,6 +90,14 @@ public class AnuncioFilter extends FilterPageable {
 
 	public void setDataPublicacao(LocalDate dataPublicacao) {
 		this.dataPublicacao = dataPublicacao;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

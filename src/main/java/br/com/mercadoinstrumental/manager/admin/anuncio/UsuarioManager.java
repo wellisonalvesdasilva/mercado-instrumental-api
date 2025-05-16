@@ -83,12 +83,12 @@ public class UsuarioManager {
 
     private Usuario findUsuarioByEmail(String email) {
         return usuarioRepository.findByEmailAndAtivo(email, true)
-                .orElseThrow(() -> new BusinessException("Usuário não encontrado para o e-mail informado."));
+                .orElseThrow(() -> new BusinessException("Usuário não encontrado para o e-mail informado!"));
     }
     
     private Usuario findByPalavraChaveTemp(String palavraPasse) {
         return usuarioRepository.findByPalavraChaveTemp(palavraPasse)
-                .orElseThrow(() -> new BusinessException("Usuário não encontrado para a palavra passe informada."));
+                .orElseThrow(() -> new BusinessException("Este link para redefinir a senha é inválido ou já foi utilizado!"));
     }
 
     private void sendActivationEmail(Usuario usuario) {

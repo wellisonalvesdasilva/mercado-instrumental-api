@@ -119,6 +119,8 @@ public class AnuncioManager {
 		Specification<Anuncio> filtrosCustomizados = (root, query, cb) -> {
 			List<Predicate> condicoes = new ArrayList<>();
 
+			condicoes.add(cb.equal(root.get("usuario"), segurancaManager.obterUsuarioLogado()));
+			
 			if (filtros.getTitulo() != null && !filtros.getTitulo().isBlank()) {
 				condicoes.add(cb.equal(root.get("titulo"), filtros.getTitulo()));
 			}

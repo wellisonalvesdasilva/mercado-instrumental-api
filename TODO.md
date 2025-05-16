@@ -1,7 +1,6 @@
 Falta:
 
-Listagem - Quinta.
-Foto do perfil - Sexta.
-
+Filtros e exclusão - Sexta.
 Site - Fim de semana.
+Seg - Hospedagem.
 
