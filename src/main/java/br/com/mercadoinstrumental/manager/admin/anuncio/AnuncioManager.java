@@ -22,7 +22,9 @@ import br.com.mercadoinstrumental.controller.admin.anuncio.schema.AnuncioUpd;
 import br.com.mercadoinstrumental.controller.commom.schema.ResponsePagedCommom;
 import br.com.mercadoinstrumental.domain.model.anuncio.Anuncio;
 import br.com.mercadoinstrumental.domain.model.anuncio.ArtefatoAnuncio;
+import br.com.mercadoinstrumental.domain.model.anuncio.MarcaInstrumentoMusicalEnum;
 import br.com.mercadoinstrumental.domain.model.anuncio.StatusAnuncioEnum;
+import br.com.mercadoinstrumental.domain.model.anuncio.TipoInstrumentoMusicalEnum;
 import br.com.mercadoinstrumental.exceptions.BusinessException;
 import br.com.mercadoinstrumental.manager.SegurancaManager;
 import br.com.mercadoinstrumental.model.usuario.Usuario;
@@ -99,6 +101,8 @@ public class AnuncioManager {
 		Anuncio anuncio = anuncioRepository.findById(idAnuncio)
 				.orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
 	
+		artefatoAnuncioRepository.deleteAll(artefatoAnuncioRepository.findAllByAnuncio(anuncio));
+		
 	    anuncioRepository.delete(anuncio);
 	}
 
@@ -108,7 +112,7 @@ public class AnuncioManager {
 		Anuncio anuncio = anuncioRepository.findById(idAnuncio)
 				.orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
 	
-	    return AnuncioMapper.INSTANCE.toAnuncioResponse(anuncio);
+	    return AnuncioMapper.INSTANCE.toAnuncioResponse(anuncio, anuncio.getDataHoraPublicacao().toLocalDate());
 	}
 
 
@@ -121,16 +125,27 @@ public class AnuncioManager {
 
 			condicoes.add(cb.equal(root.get("usuario"), segurancaManager.obterUsuarioLogado()));
 			
+			if (filtros.getId() != null) {
+				condicoes.add(cb.equal(root.get("id"), filtros.getId()));
+			}
+			
 			if (filtros.getTitulo() != null && !filtros.getTitulo().isBlank()) {
-				condicoes.add(cb.equal(root.get("titulo"), filtros.getTitulo()));
+				condicoes.add(cb.like(root.get("titulo"), "%" + filtros.getTitulo() + "%"));
+			}
+			
+			if (filtros.getStatus() != null) {
+				StatusAnuncioEnum statusEnum = StatusAnuncioEnum.fromLabel(filtros.getStatus());
+			    condicoes.add(cb.equal(root.get("status"), statusEnum));
 			}
 			
 			if (filtros.getTipo() != null) {
-				condicoes.add(cb.equal(root.get("tipo"), filtros.getTipo()));
+				TipoInstrumentoMusicalEnum tipoEnum = TipoInstrumentoMusicalEnum.fromLabel(filtros.getTipo());
+			    condicoes.add(cb.equal(root.get("tipo"), tipoEnum));
 			}
 
 			if (filtros.getMarca() != null) {
-				condicoes.add(cb.equal(root.get("marca"), filtros.getMarca()));
+				MarcaInstrumentoMusicalEnum tipoEnum = MarcaInstrumentoMusicalEnum.fromLabel(filtros.getMarca());
+			    condicoes.add(cb.equal(root.get("marca"), tipoEnum));
 			}
 
 			if (filtros.getEstado() != null) {
@@ -154,7 +169,7 @@ public class AnuncioManager {
 			}
 			
 			if (filtros.getDataPublicacao() != null) {
-			    condicoes.add(cb.between(root.get("dataPublicacao"), filtros.getDataPublicacao().atStartOfDay(), filtros.getDataPublicacao().atTime(LocalTime.MAX)));
+			    condicoes.add(cb.between(root.get("dataHoraPublicacao"), filtros.getDataPublicacao().atStartOfDay(), filtros.getDataPublicacao().atTime(LocalTime.MAX)));
 			}
 			
 			return cb.and(condicoes.toArray(Predicate[]::new));
@@ -167,7 +182,7 @@ public class AnuncioManager {
 						filtrosCustomizados,
 						pageable);
 		
-		listaBd.forEach(item -> listResponse.add(AnuncioMapper.INSTANCE.toAnuncioResponse(item)));
+		listaBd.forEach(item -> listResponse.add(AnuncioMapper.INSTANCE.toAnuncioResponse(item, item.getDataHoraPublicacao().toLocalDate())));
 
 		return new ResponsePagedCommom<AnuncioResponse>(
 				listResponse, 

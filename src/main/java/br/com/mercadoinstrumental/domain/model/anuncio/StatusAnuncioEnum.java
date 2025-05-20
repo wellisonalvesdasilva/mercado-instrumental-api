@@ -23,4 +23,13 @@ public enum StatusAnuncioEnum implements ItemValorDescricao {
 		return label;
 	}
 
+	 public static StatusAnuncioEnum fromLabel(String label) {
+	        for (StatusAnuncioEnum status : values()) {
+	            if (status.label.equalsIgnoreCase(label)) {
+	                return status;
+	            }
+	        }
+	        throw new IllegalArgumentException("Status inválido: " + label);
+	    }
+
 }

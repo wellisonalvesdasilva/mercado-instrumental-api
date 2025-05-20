@@ -4,21 +4,28 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import br.com.mercadoinstrumental.controller.commom.schema.FilterPageable;
-import br.com.mercadoinstrumental.domain.model.anuncio.MarcaInstrumentoMusicalEnum;
-import br.com.mercadoinstrumental.domain.model.anuncio.TipoInstrumentoMusicalEnum;
 
 public class AnuncioFilter extends FilterPageable {
 
 	private Long id;
 	private String titulo;
-	private TipoInstrumentoMusicalEnum tipo;
-	private MarcaInstrumentoMusicalEnum marca;
+	private String tipo;
+	private String marca;
 	private String estado;
 	private String municipio;
 	private BigDecimal valor;
 	private Boolean novo;
 	private Boolean ativo;
 	private LocalDate dataPublicacao;
+	private String status;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getTitulo() {
 		return titulo;
@@ -28,19 +35,19 @@ public class AnuncioFilter extends FilterPageable {
 		this.titulo = titulo;
 	}
 
-	public TipoInstrumentoMusicalEnum getTipo() {
+	public String getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(TipoInstrumentoMusicalEnum tipo) {
+	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
 
-	public MarcaInstrumentoMusicalEnum getMarca() {
+	public String getMarca() {
 		return marca;
 	}
 
-	public void setMarca(MarcaInstrumentoMusicalEnum marca) {
+	public void setMarca(String marca) {
 		this.marca = marca;
 	}
 
@@ -92,12 +99,12 @@ public class AnuncioFilter extends FilterPageable {
 		this.dataPublicacao = dataPublicacao;
 	}
 
-	public Long getId() {
-		return id;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

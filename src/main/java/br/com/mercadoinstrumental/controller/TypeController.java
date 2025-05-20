@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.mercadoinstrumental.controller.schema.geral.EnumResponse;
 import br.com.mercadoinstrumental.controller.schema.geral.EnumResponseMapper;
 import br.com.mercadoinstrumental.domain.model.anuncio.MarcaInstrumentoMusicalEnum;
+import br.com.mercadoinstrumental.domain.model.anuncio.StatusAnuncioEnum;
 import br.com.mercadoinstrumental.domain.model.anuncio.TipoInstrumentoMusicalEnum;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -29,6 +30,12 @@ public class TypeController {
 	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public List<EnumResponse> listMarcas() {
 		return EnumResponseMapper.INSTANCE.toEnumResponseList(MarcaInstrumentoMusicalEnum.values());
+	}
+	
+	@GetMapping(path = "status")
+	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
+	public List<EnumResponse> listStatus() {
+		return EnumResponseMapper.INSTANCE.toEnumResponseList(StatusAnuncioEnum.values());
 	}
 	
 }

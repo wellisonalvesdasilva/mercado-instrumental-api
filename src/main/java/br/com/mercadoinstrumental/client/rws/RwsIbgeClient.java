@@ -18,4 +18,7 @@ public interface RwsIbgeClient {
 	@GetMapping("localidades/estados/{uf}/municipios?orderBy=nome")
 	List<RwsListMunicipioResponse> getMunicipiosByUf(@PathVariable String uf);
 	
+	@GetMapping("localidades/municipios?orderBy=nome")
+	List<RwsListMunicipioResponse> getAllMunicipios();
+	
 }

@@ -30,11 +30,20 @@ public class IbgeController {
 		return ResponseEntity.ok(estados);
 	}
 
+	
 	@GetMapping("/municipios/{estado}")
 	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public ResponseEntity<List<RwsListMunicipioResponse>> getMunicipios(@PathVariable String estado) {
-		List<RwsListMunicipioResponse> municipios = client.getMunicipiosByUf(estado);
-		return ResponseEntity.ok(municipios);
+	    List<RwsListMunicipioResponse> municipios;
+
+	    if (estado == null || "null".equals(estado) || estado.isBlank()) {
+	        municipios = client.getAllMunicipios();
+	    } else {
+	        municipios = client.getMunicipiosByUf(estado);
+	    }
+
+	    return ResponseEntity.ok(municipios);
 	}
+
 
 }

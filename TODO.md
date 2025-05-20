@@ -1,6 +1,5 @@
-Falta:
+Terça
+- Site
 
-Filtros e exclusão - Sexta.
-Site - Fim de semana.
-Seg - Hospedagem.
-
+Quarta
+- Hospedagem
