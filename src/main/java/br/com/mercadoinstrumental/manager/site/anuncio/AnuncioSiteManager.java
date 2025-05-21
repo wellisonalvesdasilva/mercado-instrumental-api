@@ -25,6 +25,7 @@ import br.com.mercadoinstrumental.controller.site.anuncio.schema.AnuncioVendedor
 import br.com.mercadoinstrumental.controller.site.anuncio.schema.EnvioEmailSiteReq;
 import br.com.mercadoinstrumental.domain.model.anuncio.Anuncio;
 import br.com.mercadoinstrumental.domain.model.anuncio.ArtefatoAnuncio;
+import br.com.mercadoinstrumental.domain.model.anuncio.StatusAnuncioEnum;
 import br.com.mercadoinstrumental.exceptions.BusinessException;
 import br.com.mercadoinstrumental.repository.anuncio.AnuncioRepository;
 import br.com.mercadoinstrumental.repository.anuncio.ArtefatoAnuncioRepository;
@@ -82,7 +83,7 @@ public class AnuncioSiteManager {
 		Specification<Anuncio> filtrosCustomizados = (root, query, cb) -> {
 			List<Predicate> condicoes = new ArrayList<>();
 
-			condicoes.add(cb.equal(root.get("ativo"), true));
+			condicoes.add(cb.equal(root.get("status"), StatusAnuncioEnum.PUBLICADO));
 			
 			if (filtros.getTitulo() != null && !filtros.getTitulo().isBlank()) {
 				condicoes.add(cb.equal(root.get("titulo"), filtros.getTitulo()));

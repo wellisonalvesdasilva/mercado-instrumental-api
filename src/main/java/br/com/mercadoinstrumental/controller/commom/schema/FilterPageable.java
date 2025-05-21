@@ -2,22 +2,23 @@ package br.com.mercadoinstrumental.controller.commom.schema;
 
 import org.springframework.data.domain.Sort.Direction;
 
-import jakarta.validation.constraints.NotNull;
-
 public class FilterPageable {
 
-	@NotNull
-	public Integer page;
+	public Integer page = 0;
 
-	@NotNull
-	public Integer size;
+	public Integer size = 20;
 
-	@NotNull
 	public Direction direction;
 
-	@NotNull
 	public String ordenarPor;
 
+	public FilterPageable() {
+	    this.page = 0;
+	    this.size = 20;
+	    this.direction = Direction.ASC;
+	    this.ordenarPor = "id";
+	}
+	
 	public Integer getPage() {
 		return page;
 	}
