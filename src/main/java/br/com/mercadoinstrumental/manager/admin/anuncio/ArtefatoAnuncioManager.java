@@ -95,9 +95,9 @@ public class ArtefatoAnuncioManager {
                 int larguraOriginal = imagemOriginal.getWidth();
                 int alturaOriginal = imagemOriginal.getHeight();
 
-                if (larguraOriginal < 740 || alturaOriginal < 540) {
-                    throw new IllegalArgumentException("A imagem precisa ter pelo menos 740x540 pixels.");
-                }
+                // if (larguraOriginal < 740 || alturaOriginal < 540) {
+                   // throw new IllegalArgumentException("A imagem precisa ter pelo menos 740x540 pixels.");
+                // }
 
                 int larguraDesejada = 740;
                 int alturaDesejada = 540;
@@ -105,7 +105,7 @@ public class ArtefatoAnuncioManager {
                 if (Boolean.TRUE.equals(artefato.getMiniatura())) {
                     try {
                         Thumbnails.of(imagemOriginal)
-                                .size(250, 200)
+                                .size(343, 197)
                                 .keepAspectRatio(true)
                                 .toFile(caminhoArquivo.toFile());
                     } catch (IOException e) {

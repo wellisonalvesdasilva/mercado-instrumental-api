@@ -30,6 +30,7 @@ import br.com.mercadoinstrumental.exceptions.BusinessException;
 import br.com.mercadoinstrumental.repository.anuncio.AnuncioRepository;
 import br.com.mercadoinstrumental.repository.anuncio.ArtefatoAnuncioRepository;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @Service
@@ -76,7 +77,7 @@ public class AnuncioSiteManager {
 
 
 
-	public ResponsePagedCommom<AnuncioListSiteResponse> findAllAnuncioPaged(@Valid AnuncioSiteFilter filtros) {
+	public ResponsePagedCommom<AnuncioListSiteResponse> findAllAnuncioPaged(@Valid AnuncioSiteFilter filtros, HttpServletRequest request) {
 
 		List<AnuncioListSiteResponse> listResponse = new ArrayList<AnuncioListSiteResponse>();
 
@@ -127,18 +128,29 @@ public class AnuncioSiteManager {
 						filtrosCustomizados,
 						pageable);
 		
+		String baseUrl = request.getScheme() + "://" + 
+                request.getServerName() + ":" + 
+                request.getServerPort() + 
+                request.getContextPath() + "/uploads/";
+		
 		listaBd.forEach(item -> {
 			ArtefatoAnuncio miniatura = artefatoAnuncioRepository.findByAnuncioAndMiniatura(item, true);
+			
+			String caminhoArquivo = miniatura.getSrcDocumento();
+			String nomeArquivo = caminhoArquivo.substring(caminhoArquivo.lastIndexOf("/") + 1).replace("\\", "");
+	        String srcUrlPublica = baseUrl + nomeArquivo;
+
 			listResponse.add(
 					new AnuncioListSiteResponse(
 							item.getId(), 
-							miniatura.getSrcDocumento(),
+							srcUrlPublica,
 							item.getNovo(),
 							EnumResponseMapper.INSTANCE.toEnumResponse(item.getMarca()),
 							item.getTitulo(),
 							item.getValor(),
 							item.getEstado(),
-							item.getMunicipio()));
+							item.getMunicipio(),
+							item.getDescricao()));
 		});
 
 		return new ResponsePagedCommom<AnuncioListSiteResponse>(

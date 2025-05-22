@@ -20,7 +20,9 @@ public record AnuncioListSiteResponse(
 		
 		String uf,
 		
-		String municipio
+		String municipio,
+		
+		String descricao
 		
 ) {
 

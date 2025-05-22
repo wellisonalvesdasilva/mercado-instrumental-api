@@ -15,6 +15,7 @@ import br.com.mercadoinstrumental.domain.model.anuncio.Anuncio;
 import br.com.mercadoinstrumental.manager.site.anuncio.AnuncioSiteManager;
 import br.com.mercadoinstrumental.repository.anuncio.AnuncioRepository;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @Tag(name = "Anuncio::Site")
@@ -30,8 +31,9 @@ public class AnuncioSiteController {
 
 	@GetMapping
 	public ResponseEntity<ResponsePagedCommom<AnuncioListSiteResponse>> findAllAnuncio(
-			@Valid AnuncioSiteFilter filtros) {
-		return ResponseEntity.ok(anuncioManager.findAllAnuncioPaged(filtros));
+			@Valid AnuncioSiteFilter filtros,
+			HttpServletRequest request) {
+		return ResponseEntity.ok(anuncioManager.findAllAnuncioPaged(filtros, request));
 	}
 	
 	@GetMapping(path = { "{idAnuncio}" })

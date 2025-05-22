@@ -4,21 +4,11 @@ import org.springframework.data.domain.Sort.Direction;
 
 public class FilterPageable {
 
-	public Integer page = 0;
-
-	public Integer size = 20;
-
+	public Integer page;
+	public Integer size;
 	public Direction direction;
-
 	public String ordenarPor;
 
-	public FilterPageable() {
-	    this.page = 0;
-	    this.size = 20;
-	    this.direction = Direction.ASC;
-	    this.ordenarPor = "id";
-	}
-	
 	public Integer getPage() {
 		return page;
 	}
