@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,15 +47,16 @@ public class AnuncioSiteManager {
 	@Autowired
 	private EnvioEmailManager envioEmailManager;
 	
-	public AnuncioSiteResponse findDetailAnuncio(Anuncio anuncio) {
+	public AnuncioSiteResponse findDetailAnuncio(Anuncio anuncio, HttpServletRequest request) {
 		
 	    List<ArtefatoAnuncio> artefatos = artefatoAnuncioRepository.findAllByAnuncio(anuncio);
 
+	    Function<ArtefatoAnuncio, String> extrairSrc = it -> formatarSrcUrlPublica(request, it.getSrcDocumento());
 	    List<String> artefatoSrcDirs = artefatos.stream()
-	        .map(ArtefatoAnuncio::getSrcDocumento)
+	        .map(extrairSrc)
 	        .toList();
 
-	    AnuncioVendedorSiteResponse vendedor = new AnuncioVendedorSiteResponse(
+	  	    AnuncioVendedorSiteResponse vendedor = new AnuncioVendedorSiteResponse(
 	        anuncio.getUsuario().getNome(),
 	        anuncio.getUsuario().getEmail(),
 	        anuncio.getUsuario().getWhats()
@@ -128,22 +130,13 @@ public class AnuncioSiteManager {
 						filtrosCustomizados,
 						pageable);
 		
-		String baseUrl = request.getScheme() + "://" + 
-                request.getServerName() + ":" + 
-                request.getServerPort() + 
-                request.getContextPath() + "/uploads/";
 		
 		listaBd.forEach(item -> {
 			ArtefatoAnuncio miniatura = artefatoAnuncioRepository.findByAnuncioAndMiniatura(item, true);
-			
-			String caminhoArquivo = miniatura.getSrcDocumento();
-			String nomeArquivo = caminhoArquivo.substring(caminhoArquivo.lastIndexOf("/") + 1).replace("\\", "");
-	        String srcUrlPublica = baseUrl + nomeArquivo;
-
 			listResponse.add(
 					new AnuncioListSiteResponse(
 							item.getId(), 
-							srcUrlPublica,
+							formatarSrcUrlPublica(request, miniatura.getSrcDocumento()),
 							item.getNovo(),
 							EnumResponseMapper.INSTANCE.toEnumResponse(item.getMarca()),
 							item.getTitulo(),
@@ -209,7 +202,17 @@ public class AnuncioSiteManager {
 	        corpoHtml
 	    );
 	}
-
-
-
+	
+	private String formatarSrcUrlPublica(HttpServletRequest request, String srcDocumento) {
+		
+		String baseUrl = request.getScheme() + "://" + 
+                request.getServerName() + ":" + 
+                request.getServerPort() + 
+                request.getContextPath() + "/uploads/";
+		
+		String caminhoArquivo = srcDocumento;
+		String nomeArquivo = caminhoArquivo.substring(caminhoArquivo.lastIndexOf("/") + 1).replace("\\", "");
+        return baseUrl + nomeArquivo;
+	}
+	
 }

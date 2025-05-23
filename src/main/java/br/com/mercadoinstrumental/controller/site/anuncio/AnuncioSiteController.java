@@ -38,9 +38,9 @@ public class AnuncioSiteController {
 	
 	@GetMapping(path = { "{idAnuncio}" })
 	public ResponseEntity<AnuncioSiteResponse> findAnuncioById(
-			@PathVariable(required=true) Long idAnuncio) {
+			@PathVariable(required=true) Long idAnuncio, HttpServletRequest request) {
 		Anuncio anuncio = anuncioRepository.findById(idAnuncio).orElseThrow();
-		AnuncioSiteResponse response = anuncioManager.findDetailAnuncio(anuncio);
+		AnuncioSiteResponse response = anuncioManager.findDetailAnuncio(anuncio, request);
 		anuncioManager.atualizarQtdeAcesso(anuncio);
 		return ResponseEntity.ok(response);
 	}

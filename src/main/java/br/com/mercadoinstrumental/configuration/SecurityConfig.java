@@ -54,7 +54,7 @@ public class SecurityConfig {
     	    "/swagger-ui/**",
     	    "/swagger-ui.html",
     	    "/v3/api-docs/**",
-            "/anuncios-site",
+            "/anuncios-site/**",
             "/uploads/**"
     	};
     private static final String[] PUBLIC_MATCHERS_PUT = { };
