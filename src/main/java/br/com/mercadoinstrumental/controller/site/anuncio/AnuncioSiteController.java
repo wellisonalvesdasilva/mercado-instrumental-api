@@ -41,7 +41,6 @@ public class AnuncioSiteController {
 			@PathVariable(required=true) Long idAnuncio, HttpServletRequest request) {
 		Anuncio anuncio = anuncioRepository.findById(idAnuncio).orElseThrow();
 		AnuncioSiteResponse response = anuncioManager.findDetailAnuncio(anuncio, request);
-		anuncioManager.atualizarQtdeAcesso(anuncio);
 		return ResponseEntity.ok(response);
 	}
 	

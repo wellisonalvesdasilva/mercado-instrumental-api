@@ -9,6 +9,7 @@ import br.com.mercadoinstrumental.domain.model.anuncio.TipoInstrumentoMusicalEnu
 public class AnuncioSiteFilter extends FilterPageable {
 
 	private String titulo;
+	private String descricao;
 	private TipoInstrumentoMusicalEnum tipo;
 	private MarcaInstrumentoMusicalEnum marca;
 	private Boolean condicao;
@@ -79,6 +80,14 @@ public class AnuncioSiteFilter extends FilterPageable {
 
 	public void setPrecoMax(BigDecimal precoMax) {
 		this.precoMax = precoMax;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 }

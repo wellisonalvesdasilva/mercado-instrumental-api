@@ -2,7 +2,6 @@ package br.com.mercadoinstrumental.controller;
 
 import java.util.List;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,19 +20,16 @@ public class TypeController {
 
 	
 	@GetMapping(path = "tipos-instrumentos")
-	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public List<EnumResponse> listTiposInstrumentos() {
 		return EnumResponseMapper.INSTANCE.toEnumResponseList(TipoInstrumentoMusicalEnum.values());
 	}
 	
 	@GetMapping(path = "marcas")
-	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public List<EnumResponse> listMarcas() {
 		return EnumResponseMapper.INSTANCE.toEnumResponseList(MarcaInstrumentoMusicalEnum.values());
 	}
 	
 	@GetMapping(path = "status")
-	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public List<EnumResponse> listStatus() {
 		return EnumResponseMapper.INSTANCE.toEnumResponseList(StatusAnuncioEnum.values());
 	}

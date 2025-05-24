@@ -1,5 +1,6 @@
 package br.com.mercadoinstrumental.manager.site.anuncio;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,7 +48,10 @@ public class AnuncioSiteManager {
 	@Autowired
 	private EnvioEmailManager envioEmailManager;
 	
+	
+	@Transactional
 	public AnuncioSiteResponse findDetailAnuncio(Anuncio anuncio, HttpServletRequest request) {
+		
 		
 	    List<ArtefatoAnuncio> artefatos = artefatoAnuncioRepository.findAllByAnuncio(anuncio);
 
@@ -62,6 +66,9 @@ public class AnuncioSiteManager {
 	        anuncio.getUsuario().getWhats()
 	    );
 
+		anuncio.incrementarQtdeAcesso();
+		anuncioRepository.save(anuncio);
+			
 	    return new AnuncioSiteResponse(
 	        anuncio.getId(),
 	        anuncio.getTitulo(),
@@ -89,7 +96,11 @@ public class AnuncioSiteManager {
 			condicoes.add(cb.equal(root.get("status"), StatusAnuncioEnum.PUBLICADO));
 			
 			if (filtros.getTitulo() != null && !filtros.getTitulo().isBlank()) {
-				condicoes.add(cb.equal(root.get("titulo"), filtros.getTitulo()));
+				condicoes.add(cb.like(root.get("titulo"), "%" + filtros.getTitulo() + "%"));
+			}
+			
+			if (filtros.getDescricao() != null && !filtros.getDescricao().isBlank()) {
+				condicoes.add(cb.like(root.get("descricao"), "%" + filtros.getDescricao() + "%"));
 			}
 			
 			if (filtros.getTipo() != null) {
@@ -113,13 +124,15 @@ public class AnuncioSiteManager {
 				condicoes.add(cb.like(root.get("municipio"), "%" + filtros.getMunicipio() + "%"));
 			}
 			
-			if (filtros.getPrecoMin() != null && filtros.getPrecoMax() != null) {
-			    condicoes.add(cb.between(root.get("valor"), filtros.getPrecoMin(), filtros.getPrecoMax()));
-			} else if (filtros.getPrecoMin() != null) {
-			    condicoes.add(cb.greaterThanOrEqualTo(root.get("valor"), filtros.getPrecoMin()));
-			} else if (filtros.getPrecoMax() != null) {
-			    condicoes.add(cb.lessThanOrEqualTo(root.get("valor"), filtros.getPrecoMax()));
+			if (filtros.getPrecoMin() != null && filtros.getPrecoMin().compareTo(BigDecimal.ZERO) != 0
+				    && filtros.getPrecoMax() != null && filtros.getPrecoMax().compareTo(BigDecimal.ZERO) != 0) {
+				    condicoes.add(cb.between(root.get("valor"), filtros.getPrecoMin(), filtros.getPrecoMax()));
+				} else if (filtros.getPrecoMin() != null && filtros.getPrecoMin().compareTo(BigDecimal.ZERO) != 0) {
+				    condicoes.add(cb.greaterThanOrEqualTo(root.get("valor"), filtros.getPrecoMin()));
+				} else if (filtros.getPrecoMax() != null && filtros.getPrecoMax().compareTo(BigDecimal.ZERO) != 0) {
+				    condicoes.add(cb.lessThanOrEqualTo(root.get("valor"), filtros.getPrecoMax()));
 			}
+
 
 			
 			return cb.and(condicoes.toArray(Predicate[]::new));
@@ -155,13 +168,6 @@ public class AnuncioSiteManager {
 
 	}
 	
-	
-	@Transactional
-	public void atualizarQtdeAcesso(Anuncio anuncio) {
-	    anuncio.incrementarQtdeAcesso();
-	    anuncioRepository.save(anuncio);
-	}
-
 
 	public void envioMensagem(@Valid EnvioEmailSiteReq req) {
 		

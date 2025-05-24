@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,6 @@ public class IbgeController {
 	private RwsIbgeClient client;
 
 	@GetMapping("/estados")
-	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public ResponseEntity<List<RwsListEstadoResponse>> getEstados() {
 		List<RwsListEstadoResponse> estados = client.getEstados();
 		return ResponseEntity.ok(estados);
@@ -32,7 +30,6 @@ public class IbgeController {
 
 	
 	@GetMapping("/municipios/{estado}")
-	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public ResponseEntity<List<RwsListMunicipioResponse>> getMunicipios(@PathVariable String estado) {
 	    List<RwsListMunicipioResponse> municipios;
 
