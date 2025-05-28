@@ -18,6 +18,7 @@ public class AnuncioSiteFilter extends FilterPageable {
 	private BigDecimal precoMin;
 	private BigDecimal precoMax;
 
+
 	public String getTitulo() {
 		return titulo;
 	}

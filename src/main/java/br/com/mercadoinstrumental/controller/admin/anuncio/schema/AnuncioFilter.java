@@ -18,6 +18,7 @@ public class AnuncioFilter extends FilterPageable {
 	private Boolean ativo;
 	private LocalDate dataPublicacao;
 	private String status;
+	private Long quantidadeAcesso;
 
 	public Long getId() {
 		return id;
@@ -25,6 +26,14 @@ public class AnuncioFilter extends FilterPageable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getQuantidadeAcesso() {
+		return quantidadeAcesso;
+	}
+
+	public void setQuantidadeAcesso(Long quantidadeAcesso) {
+		this.quantidadeAcesso = quantidadeAcesso;
 	}
 
 	public String getTitulo() {

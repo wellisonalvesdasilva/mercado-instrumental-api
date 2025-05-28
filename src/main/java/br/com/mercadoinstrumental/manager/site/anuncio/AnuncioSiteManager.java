@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -48,6 +49,8 @@ public class AnuncioSiteManager {
 	@Autowired
 	private EnvioEmailManager envioEmailManager;
 	
+	@Value("${aplicacao-web}")
+	private String aplicacaoWebUrl;
 	
 	@Transactional
 	public AnuncioSiteResponse findDetailAnuncio(Anuncio anuncio, HttpServletRequest request) {
@@ -114,7 +117,6 @@ public class AnuncioSiteManager {
 			if (filtros.getCondicao() != null) {
 				condicoes.add(cb.equal(root.get("novo"), filtros.getCondicao()));
 			}
-			
 
 			if (filtros.getEstado() != null) {
 				condicoes.add(cb.like(root.get("estado"), "%" + filtros.getEstado() + "%"));
@@ -156,7 +158,8 @@ public class AnuncioSiteManager {
 							item.getValor(),
 							item.getEstado(),
 							item.getMunicipio(),
-							item.getDescricao()));
+							item.getDescricao(),
+							item.getQuantidadeAcesso()));
 		});
 
 		return new ResponsePagedCommom<AnuncioListSiteResponse>(
@@ -169,16 +172,18 @@ public class AnuncioSiteManager {
 	}
 	
 
-	public void envioMensagem(@Valid EnvioEmailSiteReq req) {
-		
-	    Anuncio anuncio = anuncioRepository.findById(req.idAnuncio())
+	public void envioMensagem(Long idAnuncio, @Valid EnvioEmailSiteReq req) {
+	    
+	    Anuncio anuncio = anuncioRepository.findById(idAnuncio)
 	            .orElseThrow(() -> new BusinessException("Anuncio.1000", "Anúncio não encontrado para o id informado."));
+
+	    String linkAnuncio = aplicacaoWebUrl + "/anuncio/" + idAnuncio;
 
 	    String corpoHtml = String.format("""
 	            <html>
 	            <body>
 	                <p>Olá, %s,</p>
-	                <p>Você tem uma nova mensagem enviada pelo site <strong>%s</strong> sobre o anúncio <strong>%s</strong>.</p>
+	                <p>Você tem uma nova mensagem enviada pelo site <strong>%s</strong> sobre o anúncio <strong><a href="%s">%s</a></strong>.</p>
 	                
 	                <p><strong>Informações do remetente:</strong></p>
 	                <p><strong>Nome:</strong> %s</p>
@@ -193,18 +198,19 @@ public class AnuncioSiteManager {
 	            </html>
 	            """, 
 	            anuncio.getUsuario().getNome(), 
-	            "SIGAF",  
+	            "Mercado Instrumental",  
+	            linkAnuncio,
 	            anuncio.getTitulo(),
 	            req.nome(),
 	            req.email(),
-	            req.whatsApp(),
+	            req.whats(),
 	            req.mensagem(),
 	            new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date())  
 	    );
 
 	    envioEmailManager.enviarEmailHtml(
 	        List.of(anuncio.getUsuario().getEmail()),
-	        "Nova Mensagem Enviada pelo Site - " + anuncio.getTitulo(),
+	        "Mercado Instrumental: Você recebeu uma nova mensagem!",
 	        corpoHtml
 	    );
 	}

@@ -29,7 +29,9 @@ public record AnuncioResponse(
 		
 		LocalDate dataPublicacao,
 		
-		EnumResponse status
+		EnumResponse status,
+		
+		Long quantidadeAcesso
 
 ) {
 

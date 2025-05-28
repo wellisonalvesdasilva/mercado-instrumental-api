@@ -65,7 +65,8 @@ public class SecurityConfig {
         "/auth",
         "/usuarios/*",
         "/usuarios/**",
-        "/auth/forgot/**"
+        "/auth/forgot/**",
+        "/anuncios-site/**"
     };
 
     @Bean

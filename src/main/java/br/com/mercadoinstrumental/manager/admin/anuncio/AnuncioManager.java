@@ -172,6 +172,11 @@ public class AnuncioManager {
 			    condicoes.add(cb.between(root.get("dataHoraPublicacao"), filtros.getDataPublicacao().atStartOfDay(), filtros.getDataPublicacao().atTime(LocalTime.MAX)));
 			}
 			
+			
+			if (filtros.getQuantidadeAcesso() != null) {
+				condicoes.add(cb.equal(root.get("quantidadeAcesso"), filtros.getQuantidadeAcesso()));
+			}
+			
 			return cb.and(condicoes.toArray(Predicate[]::new));
 		};
 	

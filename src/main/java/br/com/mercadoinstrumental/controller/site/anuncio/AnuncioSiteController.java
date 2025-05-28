@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +13,7 @@ import br.com.mercadoinstrumental.controller.commom.schema.ResponsePagedCommom;
 import br.com.mercadoinstrumental.controller.site.anuncio.schema.AnuncioListSiteResponse;
 import br.com.mercadoinstrumental.controller.site.anuncio.schema.AnuncioSiteFilter;
 import br.com.mercadoinstrumental.controller.site.anuncio.schema.AnuncioSiteResponse;
+import br.com.mercadoinstrumental.controller.site.anuncio.schema.EnvioEmailSiteReq;
 import br.com.mercadoinstrumental.domain.model.anuncio.Anuncio;
 import br.com.mercadoinstrumental.manager.site.anuncio.AnuncioSiteManager;
 import br.com.mercadoinstrumental.repository.anuncio.AnuncioRepository;
@@ -43,6 +46,14 @@ public class AnuncioSiteController {
 		AnuncioSiteResponse response = anuncioManager.findDetailAnuncio(anuncio, request);
 		return ResponseEntity.ok(response);
 	}
+	
+	@PostMapping(path = { "envio-email/{idAnuncio}" })
+    public ResponseEntity<Void> envioMensagem(
+    		@Valid @RequestBody EnvioEmailSiteReq req,
+    		@PathVariable Long idAnuncio) {
+        anuncioManager.envioMensagem(idAnuncio, req);
+        return ResponseEntity.ok().build();
+    }
 	
 
 	
