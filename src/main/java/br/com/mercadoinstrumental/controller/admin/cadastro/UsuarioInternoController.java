@@ -12,7 +12,7 @@ import br.com.mercadoinstrumental.controller.admin.usuario.schema.UsuarioAlterac
 import br.com.mercadoinstrumental.manager.admin.anuncio.UsuarioManager;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Usuario::DadosCadastrais")
+//@Tag(name = "Usuario::DadosCadastrais")
 @RestController
 @RequestMapping("/usuariosInterno")
 public class UsuarioInternoController {

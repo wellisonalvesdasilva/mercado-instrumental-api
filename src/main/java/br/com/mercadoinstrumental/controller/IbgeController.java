@@ -14,7 +14,7 @@ import br.com.mercadoinstrumental.client.rws.schema.RwsListEstadoResponse;
 import br.com.mercadoinstrumental.client.rws.schema.RwsListMunicipioResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "Ibge::Ibge")
+//@Tag(name = "Ibge::Ibge")
 @RestController
 @RequestMapping("ibge-dados")
 public class IbgeController {

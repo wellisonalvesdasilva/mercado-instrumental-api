@@ -22,7 +22,7 @@ import br.com.mercadoinstrumental.manager.admin.anuncio.AnuncioManager;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name = "Anuncio::Anuncio")
+//@Tag(name = "Anuncio::Anuncio")
 @RestController
 @RequestMapping("anuncios")
 public class AnuncioAdminController {

@@ -14,7 +14,7 @@ import br.com.mercadoinstrumental.domain.model.anuncio.TipoInstrumentoMusicalEnu
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@Tag(name = "Geral::Enum")
+//@Tag(name = "Geral::Enum")
 @RequestMapping("enum")
 public class TypeController {
 

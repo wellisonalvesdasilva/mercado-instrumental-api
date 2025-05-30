@@ -21,7 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
-@Tag(name = "Anuncio::Site")
+//@Tag(name = "Anuncio::Site")
 @RestController
 @RequestMapping("anuncios-site")
 public class AnuncioSiteController {

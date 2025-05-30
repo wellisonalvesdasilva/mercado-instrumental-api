@@ -21,7 +21,7 @@ import br.com.mercadoinstrumental.manager.admin.anuncio.ArtefatoAnuncioManager;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 
-@Tag(name = "Anuncio::ImagemAnuncio")
+//@Tag(name = "Anuncio::ImagemAnuncio")
 @RestController
 @RequestMapping("imagens")
 public class ArtefatoAnuncioController {
