@@ -1,5 +1,9 @@
 package br.com.mercadoinstrumental.manager.admin.anuncio;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,14 +101,27 @@ public class AnuncioManager {
 	
 	@Transactional
 	public void deleteAnuncio(Long idAnuncio) {
-	
-		Anuncio anuncio = anuncioRepository.findById(idAnuncio)
-				.orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
-	
-		artefatoAnuncioRepository.deleteAll(artefatoAnuncioRepository.findAllByAnuncio(anuncio));
-		
+
+	    Anuncio anuncio = anuncioRepository.findById(idAnuncio)
+	            .orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
+
+	    artefatoAnuncioRepository.findAllByAnuncio(anuncio).forEach(artefato -> {
+
+	        if (artefato.getSrcDocumento() != null && !artefato.getSrcDocumento().isEmpty()) {
+	            Path caminhoArquivo = Paths.get(artefato.getSrcDocumento());
+	            try {
+	                Files.deleteIfExists(caminhoArquivo);
+	            } catch (IOException e) {
+	                System.err.println("Erro ao deletar arquivo: " + caminhoArquivo + ". " + e.getMessage());
+	            }
+	        }
+
+	        artefatoAnuncioRepository.delete(artefato);
+	    });
+
 	    anuncioRepository.delete(anuncio);
 	}
+
 
 	
 	public AnuncioResponse findAnuncioById(Long idAnuncio) {

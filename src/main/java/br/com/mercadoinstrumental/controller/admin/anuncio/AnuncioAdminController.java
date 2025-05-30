@@ -49,7 +49,7 @@ public class AnuncioAdminController {
 
 	@DeleteMapping(path = { "{idAnuncio}" })
 	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
-	public ResponseEntity<Long> deleteCategoria(
+	public ResponseEntity<Long> deleteAnuncio(
 			@PathVariable(required=true) Long idAnuncio) {
 		anuncioManager.deleteAnuncio(idAnuncio);
 		return ResponseEntity.ok().build();

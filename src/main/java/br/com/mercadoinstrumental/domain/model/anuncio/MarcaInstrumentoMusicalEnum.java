@@ -4,8 +4,16 @@ import br.com.mercadoinstrumental.enums.ItemValorDescricao;
 
 public enum MarcaInstrumentoMusicalEnum implements ItemValorDescricao {
 
-	WERIL("Weril"), YAMAHA("Yamaha"), SELMER("Semler"), BACH("Bach"), GETZEN("Getzen"), JUPITER("Jupiter"),
-	KING("King"), P_MAURIAT("P. Mauriat"), OUTRA("Outra");
+	WERIL("Weril"), 
+	YAMAHA("Yamaha"), 
+	SELMER("Semler"), 
+	BACH("Bach"), 
+	GETZEN("Getzen"), 
+	JUPITER("Jupiter"),
+	KING("King"), 
+	QUASAR("Quasar"), 
+	P_MAURIAT("P. Mauriat"), 
+	OUTRA("Outra");
 
 	private String label;
 

@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
@@ -48,17 +49,13 @@ public class ArtefatoAnuncioManager {
     @Transactional
     public ArtefatoAnuncio upload(@NotNull Long idArtefato, @NotNull MultipartFile arquivo) {
 
-        if (arquivo == null) {
-            throw new IllegalArgumentException("Nenhum arquivo enviado.");
-        }
-
-        if (arquivo.isEmpty()) {
-            throw new IllegalArgumentException("Arquivo vazio.");
+        if (arquivo == null || arquivo.isEmpty()) {
+            throw new BusinessException("Upload.1000", "Arquivo inválido ou vazio.");
         }
 
         String contentType = arquivo.getContentType();
         if (contentType == null || !contentType.startsWith("image/")) {
-            throw new IllegalArgumentException("O arquivo não é uma imagem válida.");
+            throw new BusinessException("Upload.1001", "O arquivo não é uma imagem válida.");
         }
 
         ArtefatoAnuncio artefato = artefatoAnuncioRepository.findById(idArtefato)
@@ -71,14 +68,12 @@ public class ArtefatoAnuncioManager {
                 try {
                     Files.deleteIfExists(caminhoArquivoAntigo);
                 } catch (IOException e) {
-                    throw new RuntimeException("Erro ao excluir arquivo antigo.", e);
+                    throw new BusinessException("Upload.1002", "Erro ao excluir arquivo antigo.");
                 }
             }
 
-            String nomeOriginal = arquivo.getOriginalFilename();
-            if (nomeOriginal == null) {
-                throw new IllegalArgumentException("Nome do arquivo não encontrado.");
-            }
+            String nomeOriginal = Optional.ofNullable(arquivo.getOriginalFilename())
+                    .orElseThrow(() -> new BusinessException("Upload.1003", "Nome do arquivo não encontrado."));
 
             String nomeArquivo = UUID.randomUUID() + "_" + nomeOriginal;
             Path diretorioPath = Paths.get(diretorioUpload);
@@ -89,54 +84,49 @@ public class ArtefatoAnuncioManager {
             try (InputStream inputStream = arquivo.getInputStream()) {
                 BufferedImage imagemOriginal = ImageIO.read(inputStream);
                 if (imagemOriginal == null) {
-                    throw new IllegalArgumentException("Arquivo enviado não é uma imagem válida.");
+                    throw new BusinessException("Upload.1004", "Arquivo enviado não é uma imagem válida.");
                 }
 
                 int larguraOriginal = imagemOriginal.getWidth();
                 int alturaOriginal = imagemOriginal.getHeight();
 
-                // if (larguraOriginal < 740 || alturaOriginal < 540) {
-                   // throw new IllegalArgumentException("A imagem precisa ter pelo menos 740x540 pixels.");
-                // }
+                // Resolução mínima recomendada
+                int larguraMinima = 800;
+                int alturaMinima = 600;
 
-                int larguraDesejada = 740;
-                int alturaDesejada = 540;
-                
-                if (Boolean.TRUE.equals(artefato.getMiniatura())) {
-                    try {
-                        Thumbnails.of(imagemOriginal)
-                                .size(343, 197)
-                                .keepAspectRatio(true)
-                                .toFile(caminhoArquivo.toFile());
-                    } catch (IOException e) {
-                        throw new RuntimeException("Erro ao gerar miniatura", e);
-                    }
-                } else {
-                    try {
-                        Thumbnails.of(imagemOriginal)
-                                .size(larguraDesejada, alturaDesejada)
-                                .keepAspectRatio(true)
-                                .toFile(caminhoArquivo.toFile());
-                    } catch (IOException e) {
-                        throw new RuntimeException("Erro ao redimensionar imagem", e);
-                    }
+                if (larguraOriginal < larguraMinima || alturaOriginal < alturaMinima) {
+                    throw new BusinessException("Upload.1005", 
+                            String.format("A imagem deve ter no mínimo %dx%d pixels.", larguraMinima, alturaMinima));
                 }
 
-                String srcDir = diretorioUpload + "/" + nomeArquivo;
-                artefato.setSrcDocumento(srcDir);
+                try {
+                    if (Boolean.TRUE.equals(artefato.getMiniatura())) {
+                        Thumbnails.of(imagemOriginal)
+                                .size(306, 211)
+                                .keepAspectRatio(true)
+                                .toFile(caminhoArquivo.toFile());
+                    } else {
+                        Thumbnails.of(imagemOriginal)
+                                .size(larguraMinima, alturaMinima)
+                                .keepAspectRatio(true)
+                                .toFile(caminhoArquivo.toFile());
+                    }
+                } catch (IOException e) {
+                    throw new BusinessException("Upload.1006", "Erro ao redimensionar imagem.");
+                }
+
+                artefato.setSrcDocumento(diretorioUpload + "/" + nomeArquivo);
 
                 return artefatoAnuncioRepository.save(artefato);
 
             } catch (IOException e) {
-                throw new RuntimeException("Erro ao processar a imagem", e);
+                throw new BusinessException("Upload.1007", "Erro ao processar a imagem.");
             }
 
         } catch (IOException e) {
-            throw new RuntimeException("Erro ao salvar arquivo", e);
+            throw new BusinessException("Upload.1008", "Erro ao salvar o arquivo.");
         }
     }
-
-
 
 
 

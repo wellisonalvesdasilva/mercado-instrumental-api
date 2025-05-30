@@ -56,7 +56,7 @@ public class AnuncioSiteManager {
 	public AnuncioSiteResponse findDetailAnuncio(Anuncio anuncio, HttpServletRequest request) {
 		
 		
-	    List<ArtefatoAnuncio> artefatos = artefatoAnuncioRepository.findAllByAnuncio(anuncio);
+	    List<ArtefatoAnuncio> artefatos = artefatoAnuncioRepository.findAllByAnuncioAndMiniatura(anuncio, false);
 
 	    Function<ArtefatoAnuncio, String> extrairSrc = it -> formatarSrcUrlPublica(request, it.getSrcDocumento());
 	    List<String> artefatoSrcDirs = artefatos.stream()
