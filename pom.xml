@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.1</version>
+		<version>3.1.5</version>
 		<relativePath />
 	</parent>
 	<groupId>br.com</groupId>
@@ -15,7 +15,7 @@
 	<name>shop-dos-musicos-api</name>
 	<description>Mercado Instrumental</description>
 	<properties>
-		<java.version>19</java.version>
+		<java.version>17</java.version>
 		<org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
 		<maven-compiler-plugin>3.11.0</maven-compiler-plugin>
 	</properties>
