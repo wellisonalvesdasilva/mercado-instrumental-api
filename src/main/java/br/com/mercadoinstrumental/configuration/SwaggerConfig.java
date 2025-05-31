@@ -19,7 +19,7 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("API - Mercado Instrumental")
-                        .version("1.0.0"))
+                        .version("2.8.0"))
                 .components(new Components()
                         .addSecuritySchemes(securitySchemeName,
                                 new SecurityScheme()
