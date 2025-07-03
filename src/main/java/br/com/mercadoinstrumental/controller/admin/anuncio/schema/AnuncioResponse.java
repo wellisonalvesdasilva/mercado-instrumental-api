@@ -8,7 +8,7 @@ import br.com.mercadoinstrumental.controller.schema.geral.EnumResponse;
 public record AnuncioResponse(
 
 		Long id,
-		
+
 		String titulo,
 
 		String descricao,
@@ -18,20 +18,28 @@ public record AnuncioResponse(
 		EnumResponse marca,
 
 		String estado,
-		
+
 		String municipio,
 
 		BigDecimal valor,
 
 		Boolean novo,
-		
+
 		Boolean ativo,
-		
+
 		LocalDate dataPublicacao,
-		
+
 		EnumResponse status,
-		
-		Long quantidadeAcesso
+
+		Long quantidadeAcesso,
+
+		EnumResponse tipoPlano,
+
+		String urlBaseLytex,
+
+		String idPagamentoLytex,
+
+		String hashIdPagamentoLytex
 
 ) {
 

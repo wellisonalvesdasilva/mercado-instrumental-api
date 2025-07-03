@@ -58,9 +58,11 @@ public class Anuncio {
 	@Column(name = "IN_NOVO")
 	private Boolean novo;
 
-	@NotNull
 	@Column(name = "DH_PUBLICACAO")
 	private LocalDateTime dataHoraPublicacao;
+
+	@Column(name = "DH_EXPIRACAO")
+	private LocalDateTime dataHoraExpiracao;
 
 	@NotNull
 	@Column(name = "QTDE_ACESSO")
@@ -75,13 +77,24 @@ public class Anuncio {
 	@Column(name = "EN_STATUS")
 	private StatusAnuncioEnum status;
 
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	@Column(name = "EN_TIPO_PLANO")
+	private TipoPlanoEnum tipoPlano;
+
+	@Column(name = "ID_LYTEX")
+	private String idPagamentoLytex;
+
+	@Column(name = "HASH_ID_LYTEX")
+	private String hashIdPagamentoLytex;
+
 	public Anuncio() {
 	}
 
 	public Anuncio(@NotNull @Size(max = 100) String titulo, @Size(max = 4000) String descricao,
 			TipoInstrumentoMusicalEnum tipo, MarcaInstrumentoMusicalEnum marca, @NotNull String estado,
 			@NotNull String municipio, BigDecimal valor, @NotNull Boolean novo, @NotNull Boolean ativo,
-			@NotNull Usuario usuario) {
+			@NotNull Usuario usuario, @NotNull TipoPlanoEnum tipoPlano) {
 		this.titulo = titulo;
 		this.descricao = descricao;
 		this.tipo = tipo;
@@ -90,10 +103,10 @@ public class Anuncio {
 		this.municipio = municipio;
 		this.valor = valor;
 		this.novo = novo;
-		this.dataHoraPublicacao = LocalDateTime.now();
 		this.usuario = usuario;
 		this.quantidadeAcesso = 0L;
 		this.status = StatusAnuncioEnum.RASCUNHO;
+		this.tipoPlano = tipoPlano;
 	}
 
 	public Long getId() {
@@ -202,6 +215,38 @@ public class Anuncio {
 
 	public void setStatus(StatusAnuncioEnum status) {
 		this.status = status;
+	}
+
+	public TipoPlanoEnum getTipoPlano() {
+		return tipoPlano;
+	}
+
+	public void setTipoPlano(TipoPlanoEnum tipoPlano) {
+		this.tipoPlano = tipoPlano;
+	}
+
+	public LocalDateTime getDataHoraExpiracao() {
+		return dataHoraExpiracao;
+	}
+
+	public void setDataHoraExpiracao(LocalDateTime dataHoraExpiracao) {
+		this.dataHoraExpiracao = dataHoraExpiracao;
+	}
+
+	public String getIdPagamentoLytex() {
+		return idPagamentoLytex;
+	}
+
+	public void setIdPagamentoLytex(String idPagamentoLytex) {
+		this.idPagamentoLytex = idPagamentoLytex;
+	}
+
+	public String getHashIdPagamentoLytex() {
+		return hashIdPagamentoLytex;
+	}
+
+	public void setHashIdPagamentoLytex(String hashIdPagamentoLytex) {
+		this.hashIdPagamentoLytex = hashIdPagamentoLytex;
 	}
 
 }

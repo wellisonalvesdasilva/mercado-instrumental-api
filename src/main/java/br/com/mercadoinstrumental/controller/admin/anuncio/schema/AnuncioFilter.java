@@ -19,6 +19,15 @@ public class AnuncioFilter extends FilterPageable {
 	private LocalDate dataPublicacao;
 	private String status;
 	private Long quantidadeAcesso;
+	private Boolean listarParaRevisao;
+
+	public Boolean getListarParaRevisao() {
+		return listarParaRevisao;
+	}
+
+	public void setListarParaRevisao(Boolean listarParaRevisao) {
+		this.listarParaRevisao = listarParaRevisao;
+	}
 
 	public Long getId() {
 		return id;

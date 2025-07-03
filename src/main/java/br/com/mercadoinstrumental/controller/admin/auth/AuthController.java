@@ -38,15 +38,15 @@ public class AuthController {
 	 
 	@Autowired
 	private AuthService service;
-	
+		
 	@PostMapping
 	public ResponseEntity<AuthResponse> autenticar(@RequestBody @Valid LoginReq form) {
 		UsernamePasswordAuthenticationToken dadosLogin = new UsernamePasswordAuthenticationToken(form.email(), form.senha());
 		try {
 			Authentication authentication = authManager.authenticate(dadosLogin);
-			UserSS usuario = ((UserSS) authentication.getPrincipal());
-			String base64 = "Bearer " + jwtUtil.generateToken(usuario.getUsername());
-			return ResponseEntity.ok(new AuthResponse(usuario.getNome(), base64, authentication.getAuthorities()));
+			UserSS usuarioSs = ((UserSS) authentication.getPrincipal());
+			String base64 = "Bearer " + jwtUtil.generateToken(usuarioSs.getUsername());
+			return ResponseEntity.ok(new AuthResponse(usuarioSs.getNome(), base64, authentication.getAuthorities()));
 		} catch (AuthorizationException e) {
 			return ResponseEntity.badRequest().build();
 		}

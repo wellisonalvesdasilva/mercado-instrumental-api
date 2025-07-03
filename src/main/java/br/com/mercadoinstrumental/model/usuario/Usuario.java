@@ -51,8 +51,11 @@ public class Usuario implements Serializable {
 	@Column(name = "TX_PAL_CHAVE_TEMP")
 	private String palavraChaveTemp;
 
-	@Column(name = "ativo")
+	@Column(name = "IN_ATIVO")
 	private Boolean ativo;
+
+	@Column(name = "IN_HAS_ANUNCIO_FREE")
+	private Boolean teveAnuncioGratis;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "USUARIO_PERFIL")
@@ -69,6 +72,7 @@ public class Usuario implements Serializable {
 		addPerfil(TipoPerfilEnum.ANUNCIANTE);
 		gerarNovaSenhaTemporaria();
 		ativo = false;
+		teveAnuncioGratis = false;
 	}
 
 	public Long getId() {
@@ -147,11 +151,18 @@ public class Usuario implements Serializable {
 		this.ativo = ativo;
 	}
 
-	
 	public void gerarNovaSenhaTemporaria() {
 		this.palavraChaveTemp = new Random().ints(6, 0, 10).mapToObj(String::valueOf).collect(Collectors.joining());
 	}
-	
+
+	public Boolean getTeveAnuncioGratis() {
+		return teveAnuncioGratis;
+	}
+
+	public void setTeveAnuncioGratis(Boolean teveAnuncioGratis) {
+		this.teveAnuncioGratis = teveAnuncioGratis;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

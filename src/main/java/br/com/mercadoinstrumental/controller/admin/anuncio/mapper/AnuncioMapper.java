@@ -14,5 +14,5 @@ public interface AnuncioMapper {
 	AnuncioMapper INSTANCE = Mappers.getMapper(AnuncioMapper.class);
 
 	@Mapping(source = "dataPublicacao", target = "dataPublicacao")
-	AnuncioResponse toAnuncioResponse(Anuncio anuncio, LocalDate dataPublicacao);
+	AnuncioResponse toAnuncioResponse(Anuncio anuncio, LocalDate dataPublicacao, String urlBaseLytex);
 }

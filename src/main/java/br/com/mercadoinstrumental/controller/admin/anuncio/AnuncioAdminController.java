@@ -66,10 +66,23 @@ public class AnuncioAdminController {
 	
 
 	@GetMapping
-	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
+	@PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
 	public ResponseEntity<ResponsePagedCommom<AnuncioResponse>> findAllAnuncio(
 			@Valid AnuncioFilter filtros) {
 		return ResponseEntity.ok(anuncioManager.findAllAnuncioPaged(filtros));
 	}
 	
+	@GetMapping("hasAnuncioFree")
+	@PreAuthorize("hasAnyRole('ANUNCIANTE', 'ADMINISTRADOR')")
+	public ResponseEntity<Boolean> userHasOrHadAnuncioFree() {
+		return ResponseEntity.ok(anuncioManager.userHasOrHadAnuncioFree());
+	}
+	
+	
+	
+	// TODO:
+	// Fazer funcionar a integração
+	// Estudar/implementar Webhook
+	// AWS
+
 }

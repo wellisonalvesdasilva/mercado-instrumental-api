@@ -3,7 +3,9 @@ package br.com.mercadoinstrumental.controller.admin.anuncio.schema;
 import java.math.BigDecimal;
 
 import br.com.mercadoinstrumental.domain.model.anuncio.MarcaInstrumentoMusicalEnum;
+import br.com.mercadoinstrumental.domain.model.anuncio.StatusAnuncioEnum;
 import br.com.mercadoinstrumental.domain.model.anuncio.TipoInstrumentoMusicalEnum;
+import br.com.mercadoinstrumental.domain.model.anuncio.TipoPlanoEnum;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,7 +25,7 @@ public record AnuncioUpd(
 
 		@NotNull
 		MarcaInstrumentoMusicalEnum marca,
-
+		
 	    @NotNull
 	    String estado,
 	    
@@ -38,7 +40,7 @@ public record AnuncioUpd(
 		Boolean novo,
 		
 		@NotNull
-		Boolean isPublicacao
+		StatusAnuncioEnum status
 
 ) {
 

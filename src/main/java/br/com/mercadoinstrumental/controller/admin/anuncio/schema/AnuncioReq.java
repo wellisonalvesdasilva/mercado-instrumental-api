@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import br.com.mercadoinstrumental.domain.model.anuncio.MarcaInstrumentoMusicalEnum;
 import br.com.mercadoinstrumental.domain.model.anuncio.TipoInstrumentoMusicalEnum;
+import br.com.mercadoinstrumental.domain.model.anuncio.TipoPlanoEnum;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
@@ -23,6 +24,9 @@ public record AnuncioReq(
     
     @NotNull
     MarcaInstrumentoMusicalEnum marca,
+    
+    @NotNull
+    TipoPlanoEnum tipoPlano,
     
     @NotNull
     String estado,
