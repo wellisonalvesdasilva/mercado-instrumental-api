@@ -12,6 +12,8 @@ public enum MarcaInstrumentoMusicalEnum implements ItemValorDescricao {
 	JUPITER("Jupiter"),
 	KING("King"), 
 	QUASAR("Quasar"), 
+	EAGLE("Eagle"), 
+	MICHAEL("Michael"), 
 	P_MAURIAT("P. Mauriat"), 
 	OUTRA("Outra");
 

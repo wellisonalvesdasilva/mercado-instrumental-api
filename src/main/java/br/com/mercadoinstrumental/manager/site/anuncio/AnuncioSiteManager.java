@@ -58,7 +58,7 @@ public class AnuncioSiteManager {
 		
 	    List<ArtefatoAnuncio> artefatos = artefatoAnuncioRepository.findAllByAnuncioAndMiniatura(anuncio, false);
 
-	    Function<ArtefatoAnuncio, String> extrairSrc = it -> formatarSrcUrlPublica(request, it.getSrcDocumento());
+	    Function<ArtefatoAnuncio, String> extrairSrc = it -> it.getSrcDocumento();
 	    List<String> artefatoSrcDirs = artefatos.stream()
 	        .map(extrairSrc)
 	        .toList();
@@ -89,6 +89,7 @@ public class AnuncioSiteManager {
 
 
 
+    // TODO:
 	public ResponsePagedCommom<AnuncioListSiteResponse> findAllAnuncioPaged(@Valid AnuncioSiteFilter filtros, HttpServletRequest request) {
 
 		List<AnuncioListSiteResponse> listResponse = new ArrayList<AnuncioListSiteResponse>();
@@ -151,7 +152,7 @@ public class AnuncioSiteManager {
 			listResponse.add(
 					new AnuncioListSiteResponse(
 							item.getId(), 
-							formatarSrcUrlPublica(request, miniatura.getSrcDocumento()),
+							miniatura.getSrcDocumento(),
 							item.getNovo(),
 							EnumResponseMapper.INSTANCE.toEnumResponse(item.getMarca()),
 							item.getTitulo(),
@@ -215,16 +216,6 @@ public class AnuncioSiteManager {
 	    );
 	}
 	
-	private String formatarSrcUrlPublica(HttpServletRequest request, String srcDocumento) {
-		
-		String baseUrl = request.getScheme() + "://" + 
-                request.getServerName() + ":" + 
-                request.getServerPort() + 
-                request.getContextPath() + "/uploads/";
-		
-		String caminhoArquivo = srcDocumento;
-		String nomeArquivo = caminhoArquivo.substring(caminhoArquivo.lastIndexOf("/") + 1).replace("\\", "");
-        return baseUrl + nomeArquivo;
-	}
+   
 	
 }

@@ -77,12 +77,5 @@ public class AnuncioAdminController {
 	public ResponseEntity<Boolean> userHasOrHadAnuncioFree() {
 		return ResponseEntity.ok(anuncioManager.userHasOrHadAnuncioFree());
 	}
-	
-	
-	
-	// TODO:
-	// Fazer funcionar a integração
-	// Estudar/implementar Webhook
-	// AWS
 
 }

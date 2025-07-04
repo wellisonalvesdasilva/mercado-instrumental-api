@@ -5,7 +5,7 @@ import br.com.mercadoinstrumental.enums.ItemValorDescricao;
 public enum StatusAnuncioEnum implements ItemValorDescricao {
 
 	RASCUNHO("Rascunho"),
-	AGUARDANDO_PUBLICACAO("Aguardando Publicação"),
+	AGUARDANDO_PUBLICACAO("Aguardando Revisão para Publicação"),
 	PUBLICADO("Publicado"),
 	AGUARDANDO_CONFIRMACAO_PAGAMENTO("Aguardando Confirmação de Pagamento"),
 	EXPIRADO("Expirado");
