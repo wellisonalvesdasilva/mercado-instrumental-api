@@ -67,7 +67,7 @@ public class SecurityConfig {
         "/usuarios/**",
         "/auth/forgot/**",
         "/anuncios-site/**",
-        "/webhook/**"
+        "/webhooks/*"
     };
 
     @Bean

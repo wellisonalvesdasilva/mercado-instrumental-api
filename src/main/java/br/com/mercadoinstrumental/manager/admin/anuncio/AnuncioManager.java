@@ -11,6 +11,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -370,8 +371,9 @@ public class AnuncioManager {
 
 	@Transactional
 	public void finalizeInvoicePayment(@Valid LiquidateInvoiceWebhookReq req) {
-		
-		if (req.getWebhookType().equals("liquidateInvoice")) {
+		if (Objects.isNull(req) || Objects.isNull(req.getWebhookType())) {
+			throw new BusinessException("Favor informar um JSON válido.");
+		} else if (req.getWebhookType().equals("liquidateInvoice")) {
 			
 			Anuncio anuncio = anuncioRepository.findByIdPagamentoLytex(req.getData().getInvoiceId());
 		    if (anuncio == null || !StatusAnuncioEnum.AGUARDANDO_CONFIRMACAO_PAGAMENTO.equals(anuncio.getStatus())) {
@@ -379,9 +381,9 @@ public class AnuncioManager {
 		    }
 	
 		    anuncio.setStatus(StatusAnuncioEnum.AGUARDANDO_PUBLICACAO);
-		    definirDatasAnuncio(anuncio);
-		    sendEmailForRevision(anuncio);
 		    anuncioRepository.save(anuncio);
+		    
+		    sendEmailForRevision(anuncio);
 		}
 	}
 
