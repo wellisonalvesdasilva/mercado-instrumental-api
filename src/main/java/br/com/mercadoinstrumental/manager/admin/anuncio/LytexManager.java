@@ -60,10 +60,11 @@ public class LytexManager {
 	}
 
 	private RwsLytexPaymentReq createRequestLytexPayment(Anuncio anuncio) {
-		List<RwsLytexPaymentPaymentItemReq> items = List.of(new RwsLytexPaymentPaymentItemReq("Anúncio por " + anuncio.getTipoPlano().getDays() + " dias para Venda do Produto: " + anuncio.getTitulo() + " (Plano " + anuncio.getTipoPlano().getLabel() + ").", anuncio.getTipoPlano().getPrice(), String.valueOf(1)));
+		String titulo = "Anúncio por " + anuncio.getTipoPlano().getDays() + " dias para Venda do Produto: " + anuncio.getTitulo() + " (Plano " + anuncio.getTipoPlano().getLabel() + ").";
+		List<RwsLytexPaymentPaymentItemReq> items = List.of(new RwsLytexPaymentPaymentItemReq(titulo, anuncio.getTipoPlano().getPrice(), String.valueOf(1)));
 		RwsLytexPaymentItemReq paymentMethods = new RwsLytexPaymentItemReq(new RwsLytexPaymentTypePixReq(true), new RwsLytexPaymentTypeBoletoReq(true), new RwsLytexPaymentTypeCreditCardReq(false, 0));
 		RwsLytexPaymentRedirectReq redirect = new RwsLytexPaymentRedirectReq(String.format(urlSite + "/" + "%s", anuncio.getId()), true);
-		RwsLytexPaymentReq dto = new RwsLytexPaymentReq("Anúncio " + anuncio.getIdPagamentoLytex() +" - Mercado Instrumental", anuncio.getTipoPlano().getPrice(), anuncio.getId().toString(), items, paymentMethods, redirect);
+		RwsLytexPaymentReq dto = new RwsLytexPaymentReq(titulo, anuncio.getTipoPlano().getPrice(), anuncio.getId().toString(), items, paymentMethods, redirect);
 		return dto;
 	}
 
