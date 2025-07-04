@@ -375,7 +375,7 @@ public class AnuncioManager {
 			throw new BusinessException("Favor informar um JSON válido.");
 		} else if (req.getWebhookType().equals("liquidateInvoice")) {
 			
-			Anuncio anuncio = anuncioRepository.findByIdPagamentoLytex(req.getData().getInvoiceId());
+			Anuncio anuncio = anuncioRepository.findByIdPagamentoLytex(req.getData().get_paymentLinkId());
 		    if (anuncio == null || !StatusAnuncioEnum.AGUARDANDO_CONFIRMACAO_PAGAMENTO.equals(anuncio.getStatus())) {
 		        throw new BusinessException("Anúncio não apto para liquidação.");
 		    }
