@@ -61,6 +61,9 @@ public class Usuario implements Serializable {
 	@CollectionTable(name = "USUARIO_PERFIL")
 	private Set<Integer> perfil = new HashSet<>();
 
+	@Column(name = "TX_HASH_AFILIADO", unique = true)
+	private String hashAfiliado;
+	
 	public Usuario() {
 	}
 
@@ -161,6 +164,16 @@ public class Usuario implements Serializable {
 
 	public void setTeveAnuncioGratis(Boolean teveAnuncioGratis) {
 		this.teveAnuncioGratis = teveAnuncioGratis;
+	}
+	
+	
+
+	public String getHashAfiliado() {
+		return hashAfiliado;
+	}
+
+	public void setHashAfiliado(String hashAfiliado) {
+		this.hashAfiliado = hashAfiliado;
 	}
 
 	@Override

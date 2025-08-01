@@ -1,4 +1,5 @@
 package br.com.mercadoinstrumental.controller.admin.cadastro;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,8 +18,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/usuariosInterno")
 public class UsuarioInternoController {
 
-    @Autowired
-    private UsuarioManager usuarioManager;
+	@Autowired
+	private UsuarioManager usuarioManager;
 
 	@GetMapping
 	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
@@ -26,14 +27,18 @@ public class UsuarioInternoController {
 		UsuarioAlteracaoSenhaResponse usuario = usuarioManager.buscarDadosUsuarioLogado();
 		return ResponseEntity.ok(usuario);
 	}
-	
+
 	@PostMapping
 	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
-	public ResponseEntity<Void> alterarSenha(
-			@RequestParam String senhaAtual,
-			@RequestParam String novaSenha) {
+	public ResponseEntity<Void> alterarSenha(@RequestParam String senhaAtual, @RequestParam String novaSenha) {
 		usuarioManager.alterarSenha(senhaAtual, novaSenha);
-        return ResponseEntity.ok().build();
+		return ResponseEntity.ok().build();
 	}
 
-  }
+	@GetMapping("codigo-afiliado")
+	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
+	public ResponseEntity<String> obterCodigoAfiliado() {
+		return ResponseEntity.ok(usuarioManager.obterCodigoAfiliado());
+	}
+
+}

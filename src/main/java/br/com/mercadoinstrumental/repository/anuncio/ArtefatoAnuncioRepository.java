@@ -9,11 +9,11 @@ import br.com.mercadoinstrumental.domain.model.anuncio.ArtefatoAnuncio;
 
 public interface ArtefatoAnuncioRepository extends JpaRepository<ArtefatoAnuncio, Long> {
 
-	List<ArtefatoAnuncio> findAllByAnuncioAndMiniatura(Anuncio anuncio, Boolean miniatura);
+	List<ArtefatoAnuncio> findAllByAnuncioAndMiniaturaAndSrcDocumentoIsNotNull(Anuncio anuncio, Boolean miniatura);
 	
 	ArtefatoAnuncio findByAnuncioAndMiniatura(Anuncio anuncio, Boolean miniatura);
 
-	Boolean existsByAnuncioAndSrcDocumentoIsNull(Anuncio anuncio);
+	Boolean existsByAnuncioAndSrcDocumentoIsNullAndNumeroIn(Anuncio anuncio, List<Integer> numeros);
 
 	List<ArtefatoAnuncio> findAllByAnuncio(Anuncio anuncio);
 }

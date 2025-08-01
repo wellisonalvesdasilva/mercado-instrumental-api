@@ -94,7 +94,7 @@ public class AnuncioManager {
 
 
 	@Transactional
-	public Anuncio updateAnuncio(@Valid Long idAnuncio, AnuncioUpd upd) {
+	public String updateAnuncio(@Valid Long idAnuncio, AnuncioUpd upd) {
 
 		Anuncio anuncio = anuncioRepository.findById(idAnuncio)
 				.orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
@@ -109,13 +109,18 @@ public class AnuncioManager {
 		anuncio.setNovo(upd.novo());
 		anuncio.setStatus(upd.status());
 		
+		
+		String retorno = "";
 		if (StatusAnuncioEnum.AGUARDANDO_PUBLICACAO.equals(upd.status())) {
 			regrasAoCadastrar(anuncio);
+			retorno = anuncio.getHashIdPagamentoLytex() != null ? (this.urlBaseLytex + "/" + anuncio.getHashIdPagamentoLytex()) : "";
 		} else if (StatusAnuncioEnum.PUBLICADO.equals(upd.status())) {
 			regrasAoAprovar(anuncio);
 		}
 
-		return anuncioRepository.save(anuncio);
+		anuncioRepository.save(anuncio);
+		
+		return retorno;
 	}
 
 
@@ -159,9 +164,9 @@ public class AnuncioManager {
 		Specification<Anuncio> filtrosCustomizados = (root, query, cb) -> {
 			List<Predicate> condicoes = new ArrayList<>();
 
-			condicoes.add(cb.equal(root.get("usuario"), segurancaManager.obterUsuarioLogado()));
-
-			if (filtros.getListarParaRevisao() != null && filtros.getListarParaRevisao().equals(true)) {
+			if (filtros.getListarParaRevisao() == null || Boolean.FALSE.equals(filtros.getListarParaRevisao())) {
+				condicoes.add(cb.equal(root.get("usuario"), segurancaManager.obterUsuarioLogado()));
+			} else {
 				condicoes.add(cb.equal(root.get("status"), StatusAnuncioEnum.AGUARDANDO_PUBLICACAO));
 			}
 
@@ -240,7 +245,7 @@ public class AnuncioManager {
 	}
 
 	private void validarAntesDePublicar(Anuncio anuncio) {
-		boolean possuiImagemNaoEnviada = artefatoAnuncioRepository.existsByAnuncioAndSrcDocumentoIsNull(anuncio);
+		boolean possuiImagemNaoEnviada = artefatoAnuncioRepository.existsByAnuncioAndSrcDocumentoIsNullAndNumeroIn(anuncio, List.of(1, 2));
 
 		if (possuiImagemNaoEnviada) {
 			throw new BusinessException(
@@ -322,9 +327,8 @@ public class AnuncioManager {
 
 	
 	private void regrasAoCadastrar(Anuncio anuncio) {
-		
+		validarAntesDePublicar(anuncio);
 		if (TipoPlanoEnum.GRATIS.equals(anuncio.getTipoPlano())) {
-			validarAntesDePublicar(anuncio);
 			sendEmailForRevision(anuncio);
 		} else {
 			anuncio.setStatus(StatusAnuncioEnum.AGUARDANDO_CONFIRMACAO_PAGAMENTO);

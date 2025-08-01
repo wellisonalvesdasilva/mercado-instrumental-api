@@ -4,10 +4,10 @@ import br.com.mercadoinstrumental.enums.ItemValorDescricao;
 
 public enum TipoPlanoEnum implements ItemValorDescricao {
 
-	GRATIS("Grátis", 0, 15), 
-	BASICO("Básico", 250, 20), 
-	PREMIUM("Premium", 4000, 30), 
-	AVANCADO("Avançado", 6000, 60);
+	PREMIUM("Premium", 250, 60),
+	AVANCADO("Avançado", 7990, 45), 
+	BASICO("Básico", 5990, 30), 
+	GRATIS("Grátis", 0, 0);
 
 	private String label;
 	private int price;

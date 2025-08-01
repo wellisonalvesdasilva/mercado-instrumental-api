@@ -39,11 +39,10 @@ public class AnuncioAdminController {
 	
 	@PutMapping(path = { "{idAnuncio}" })
 	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
-	public ResponseEntity<Long> updateAnuncio(@Valid 
+	public ResponseEntity<String> updateAnuncio(@Valid 
 			@PathVariable(required=true) Long idAnuncio,
 			@RequestBody AnuncioUpd upd) {
-		Anuncio anuncio = anuncioManager.updateAnuncio(idAnuncio, upd);
-		return ResponseEntity.ok(anuncio.getId());
+		return ResponseEntity.ok(anuncioManager.updateAnuncio(idAnuncio, upd));
 	}
 	
 

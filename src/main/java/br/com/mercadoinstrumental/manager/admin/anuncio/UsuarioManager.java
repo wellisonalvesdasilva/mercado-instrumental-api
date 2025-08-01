@@ -1,5 +1,6 @@
 package br.com.mercadoinstrumental.manager.admin.anuncio;
 
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -175,6 +176,46 @@ public class UsuarioManager {
 
         usuarioLogado.setSenha(novaSenha);
         usuarioRepository.save(usuarioLogado);
+    }
+
+    
+    public String obterCodigoAfiliado() {
+        Usuario usuarioLogado = segurancaManager.obterUsuarioLogado();
+
+        if (usuarioLogado.getHashAfiliado() != null) {
+            return usuarioLogado.getHashAfiliado();
+        }
+        
+       return gerarCodigoAfiliado(usuarioLogado);
+
+
+    }
+
+    @Transactional
+    public String gerarCodigoAfiliado(Usuario usuarioLogado) {
+		String prefixo = "MI-";
+        int tamanhoCodigo = 12;
+        String codigoAleatorio = gerarStringAleatoria(tamanhoCodigo);
+
+        String codigo = prefixo + codigoAleatorio;
+
+        usuarioLogado.setHashAfiliado(codigo);
+        usuarioRepository.save(usuarioLogado);
+        
+        return codigo;
+	}
+
+	private String gerarStringAleatoria(int length) {
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        SecureRandom random = new SecureRandom();
+        StringBuilder sb = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(caracteres.length());
+            sb.append(caracteres.charAt(index));
+        }
+
+        return sb.toString();
     }
 
     
