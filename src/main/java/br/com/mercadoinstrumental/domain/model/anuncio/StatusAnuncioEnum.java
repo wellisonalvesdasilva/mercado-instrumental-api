@@ -8,7 +8,8 @@ public enum StatusAnuncioEnum implements ItemValorDescricao {
 	AGUARDANDO_PUBLICACAO("Aguardando Revisão para Publicação"),
 	PUBLICADO("Publicado"),
 	AGUARDANDO_CONFIRMACAO_PAGAMENTO("Aguardando Confirmação de Pagamento"),
-	EXPIRADO("Expirado");
+	EXPIRADO("Expirado"),
+	CANCELADO("Cancelado");
 	
     private String label;
 

@@ -41,6 +41,12 @@ public class UsuarioManager {
     public Usuario createUsuario(@Valid UsuarioReq req) {
         validateEmail(req.email());
         Usuario usuario = new Usuario(req.nome(), req.email(), req.senha(), req.whats());
+        if (req.hashAfiliado() != null) {
+        	Usuario afiliado = usuarioRepository.findByHashPropria(req.hashAfiliado()).orElseThrow();
+        	usuario.setHashDeQuemIndicou(afiliado.getHashPropria());
+        }
+        usuario.setHashPropria(gerarCodigoAfiliado(usuario));
+
         usuario = usuarioRepository.save(usuario);
         sendActivationEmail(usuario);
         return usuario;
@@ -177,19 +183,7 @@ public class UsuarioManager {
         usuarioLogado.setSenha(novaSenha);
         usuarioRepository.save(usuarioLogado);
     }
-
     
-    public String obterCodigoAfiliado() {
-        Usuario usuarioLogado = segurancaManager.obterUsuarioLogado();
-
-        if (usuarioLogado.getHashAfiliado() != null) {
-            return usuarioLogado.getHashAfiliado();
-        }
-        
-       return gerarCodigoAfiliado(usuarioLogado);
-
-
-    }
 
     @Transactional
     public String gerarCodigoAfiliado(Usuario usuarioLogado) {
@@ -197,12 +191,8 @@ public class UsuarioManager {
         int tamanhoCodigo = 12;
         String codigoAleatorio = gerarStringAleatoria(tamanhoCodigo);
 
-        String codigo = prefixo + codigoAleatorio;
+        return prefixo + codigoAleatorio;
 
-        usuarioLogado.setHashAfiliado(codigo);
-        usuarioRepository.save(usuarioLogado);
-        
-        return codigo;
 	}
 
 	private String gerarStringAleatoria(int length) {

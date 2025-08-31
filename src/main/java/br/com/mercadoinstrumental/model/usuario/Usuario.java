@@ -1,6 +1,7 @@
 package br.com.mercadoinstrumental.model.usuario;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -10,14 +11,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.mercadoinstrumental.domain.model.anuncio.Anuncio;
+import br.com.mercadoinstrumental.domain.model.anuncio.TipoInstrumentoMusicalEnum;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -61,9 +68,27 @@ public class Usuario implements Serializable {
 	@CollectionTable(name = "USUARIO_PERFIL")
 	private Set<Integer> perfil = new HashSet<>();
 
-	@Column(name = "TX_HASH_AFILIADO", unique = true)
-	private String hashAfiliado;
-	
+	@NotNull
+	@Column(name = "TX_HASH_PROPRIA", unique = true)
+	private String hashPropria;
+
+	@Column(name = "TX_HASH_DE_QUEM_INDICOU")
+	private String hashDeQuemIndicou;
+
+	@NotNull
+	@Column(name = "DT_CADASTRO")
+	private LocalDate dataCadastro;
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "EN_TIPO_CHAVE_PIX")
+	private TipoChavePixEnum tipoChavePix;
+
+	@Column(name = "CHAVE_PIX")
+	private String chavePix;
+
+	@OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Anuncio> anuncios = new HashSet<>();
+
 	public Usuario() {
 	}
 
@@ -76,6 +101,15 @@ public class Usuario implements Serializable {
 		gerarNovaSenhaTemporaria();
 		ativo = false;
 		teveAnuncioGratis = false;
+		this.dataCadastro = LocalDate.now();
+	}
+
+	public TipoChavePixEnum getTipoChavePix() {
+		return tipoChavePix;
+	}
+
+	public void setTipoChavePix(TipoChavePixEnum tipoChavePix) {
+		this.tipoChavePix = tipoChavePix;
 	}
 
 	public Long getId() {
@@ -122,6 +156,14 @@ public class Usuario implements Serializable {
 		return perfil;
 	}
 
+	public String getChavePix() {
+		return chavePix;
+	}
+
+	public void setChavePix(String chavePix) {
+		this.chavePix = chavePix;
+	}
+
 	public void setPerfil(Set<Integer> listaPerfis) {
 		this.perfil = listaPerfis;
 	}
@@ -165,15 +207,37 @@ public class Usuario implements Serializable {
 	public void setTeveAnuncioGratis(Boolean teveAnuncioGratis) {
 		this.teveAnuncioGratis = teveAnuncioGratis;
 	}
-	
-	
 
-	public String getHashAfiliado() {
-		return hashAfiliado;
+	public String getHashPropria() {
+		return hashPropria;
 	}
 
-	public void setHashAfiliado(String hashAfiliado) {
-		this.hashAfiliado = hashAfiliado;
+	public void setHashPropria(String hashPropria) {
+		this.hashPropria = hashPropria;
+	}
+
+	public String getHashDeQuemIndicou() {
+		return hashDeQuemIndicou;
+	}
+
+	public void setHashDeQuemIndicou(String hashDeQuemIndicou) {
+		this.hashDeQuemIndicou = hashDeQuemIndicou;
+	}
+
+	public LocalDate getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(LocalDate dataCadastro) {
+		this.dataCadastro = dataCadastro;
+	}
+
+	public Set<Anuncio> getAnuncios() {
+		return anuncios;
+	}
+
+	public void setAnuncios(Set<Anuncio> anuncios) {
+		this.anuncios = anuncios;
 	}
 
 	@Override

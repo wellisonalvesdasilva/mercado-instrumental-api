@@ -19,6 +19,9 @@ public record UsuarioReq(
 
 		@NotNull
 		String
-		senha) {
+		senha,
+		
+		String
+		hashAfiliado) {
 
 }

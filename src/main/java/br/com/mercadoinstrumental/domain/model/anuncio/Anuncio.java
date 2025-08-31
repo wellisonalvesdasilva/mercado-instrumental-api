@@ -1,6 +1,7 @@
 package br.com.mercadoinstrumental.domain.model.anuncio;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import br.com.mercadoinstrumental.model.usuario.Usuario;
@@ -87,6 +88,16 @@ public class Anuncio {
 
 	@Column(name = "HASH_ID_LYTEX")
 	private String hashIdPagamentoLytex;
+
+	@NotNull
+	@Column(name = "VL_PAGO_PLANO")
+	private BigDecimal valorPagoPlano;
+
+	@Column(name = "DT_PAGAMENTO_COMISSAO")
+	private LocalDate dataPagamentoComissao;
+
+	@Column(name = "NU_TRANSACAO_PAGAMENTO")
+	private String numeroTransacaoPagamento;
 
 	public Anuncio() {
 	}
@@ -247,6 +258,30 @@ public class Anuncio {
 
 	public void setHashIdPagamentoLytex(String hashIdPagamentoLytex) {
 		this.hashIdPagamentoLytex = hashIdPagamentoLytex;
+	}
+
+	public BigDecimal getValorPagoPlano() {
+		return valorPagoPlano;
+	}
+
+	public void setValorPagoPlano(BigDecimal valorPagoPlano) {
+		this.valorPagoPlano = valorPagoPlano;
+	}
+
+	public LocalDate getDataPagamentoComissao() {
+		return dataPagamentoComissao;
+	}
+
+	public void setDataPagamentoComissao(LocalDate dataPagamentoComissao) {
+		this.dataPagamentoComissao = dataPagamentoComissao;
+	}
+
+	public String getNumeroTransacaoPagamento() {
+		return numeroTransacaoPagamento;
+	}
+
+	public void setNumeroTransacaoPagamento(String numeroTransacaoPagamento) {
+		this.numeroTransacaoPagamento = numeroTransacaoPagamento;
 	}
 
 }

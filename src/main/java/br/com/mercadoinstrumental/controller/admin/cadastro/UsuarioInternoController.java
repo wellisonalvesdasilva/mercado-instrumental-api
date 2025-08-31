@@ -34,11 +34,4 @@ public class UsuarioInternoController {
 		usuarioManager.alterarSenha(senhaAtual, novaSenha);
 		return ResponseEntity.ok().build();
 	}
-
-	@GetMapping("codigo-afiliado")
-	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
-	public ResponseEntity<String> obterCodigoAfiliado() {
-		return ResponseEntity.ok(usuarioManager.obterCodigoAfiliado());
-	}
-
 }

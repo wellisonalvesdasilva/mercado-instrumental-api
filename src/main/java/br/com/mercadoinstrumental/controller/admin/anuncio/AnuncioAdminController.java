@@ -50,7 +50,7 @@ public class AnuncioAdminController {
 	@PreAuthorize("hasAnyRole('ANUNCIANTE')")
 	public ResponseEntity<Long> deleteAnuncio(
 			@PathVariable(required=true) Long idAnuncio) {
-		anuncioManager.deleteAnuncio(idAnuncio);
+		anuncioManager.cancelAnuncio(idAnuncio);
 		return ResponseEntity.ok().build();
 	}
 	

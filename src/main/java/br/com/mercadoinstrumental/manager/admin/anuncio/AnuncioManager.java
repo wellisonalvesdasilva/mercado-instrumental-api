@@ -1,11 +1,11 @@
 package br.com.mercadoinstrumental.manager.admin.anuncio;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -86,6 +86,9 @@ public class AnuncioManager {
 		Anuncio anuncio = new Anuncio(req.titulo(), req.descricao(), req.tipo(), req.marca(), req.estado(),
 				req.municipio(), req.valor(), req.novo(), Boolean.TRUE, usuarioLogado, req.tipoPlano());
 
+		// Guardar o valor pago pelo plano.
+		anuncio.setValorPagoPlano(BigDecimal.valueOf(req.tipoPlano().getPrice(), 2));
+				
 		anuncio = anuncioRepository.save(anuncio);
 		criarArtefatosRascunho(anuncio);
 
@@ -125,7 +128,7 @@ public class AnuncioManager {
 
 
 	@Transactional
-	public void deleteAnuncio(Long idAnuncio) {
+	public void cancelAnuncio(Long idAnuncio) {
 
 		Anuncio anuncio = anuncioRepository.findById(idAnuncio)
 				.orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
@@ -144,7 +147,8 @@ public class AnuncioManager {
 			artefatoAnuncioRepository.delete(artefato);
 		});
 
-		anuncioRepository.delete(anuncio);
+		anuncio.setStatus(StatusAnuncioEnum.CANCELADO);
+		anuncioRepository.save(anuncio);
 		
 
 	}

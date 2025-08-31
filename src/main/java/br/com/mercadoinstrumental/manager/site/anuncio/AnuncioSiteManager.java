@@ -29,6 +29,7 @@ import br.com.mercadoinstrumental.controller.site.anuncio.schema.EnvioEmailSiteR
 import br.com.mercadoinstrumental.domain.model.anuncio.Anuncio;
 import br.com.mercadoinstrumental.domain.model.anuncio.ArtefatoAnuncio;
 import br.com.mercadoinstrumental.domain.model.anuncio.StatusAnuncioEnum;
+import br.com.mercadoinstrumental.domain.model.anuncio.TipoPlanoEnum;
 import br.com.mercadoinstrumental.exceptions.BusinessException;
 import br.com.mercadoinstrumental.repository.anuncio.AnuncioRepository;
 import br.com.mercadoinstrumental.repository.anuncio.ArtefatoAnuncioRepository;
@@ -88,8 +89,6 @@ public class AnuncioSiteManager {
 	}
 
 
-
-    // TODO:
 	public ResponsePagedCommom<AnuncioListSiteResponse> findAllAnuncioPaged(@Valid AnuncioSiteFilter filtros, HttpServletRequest request) {
 
 		List<AnuncioListSiteResponse> listResponse = new ArrayList<AnuncioListSiteResponse>();
@@ -136,9 +135,21 @@ public class AnuncioSiteManager {
 				    condicoes.add(cb.lessThanOrEqualTo(root.get("valor"), filtros.getPrecoMax()));
 			}
 
+		    query.orderBy(
+		            cb.desc(
+		                cb.selectCase()
+		                    .when(cb.or(
+		                        cb.equal(root.get("tipoPlano"), TipoPlanoEnum.PREMIUM),
+		                        cb.equal(root.get("tipoPlano"), TipoPlanoEnum.AVANCADO)
+		                    ), 1)
+		                    .otherwise(0)
+		            ),
+		            filtros.getDirection().isAscending() ?
+		                cb.asc(root.get(filtros.getOrdenarPor())) :
+		                cb.desc(root.get(filtros.getOrdenarPor()))
+		        );
 
-			
-			return cb.and(condicoes.toArray(Predicate[]::new));
+		        return cb.and(condicoes.toArray(Predicate[]::new));
 		};
 
 		Pageable pageable = PageRequest.of(filtros.getPage(), filtros.getSize(), Sort.by(filtros.getDirection(), filtros.getOrdenarPor()));
@@ -160,7 +171,8 @@ public class AnuncioSiteManager {
 							item.getEstado(),
 							item.getMunicipio(),
 							item.getDescricao(),
-							item.getQuantidadeAcesso()));
+							item.getQuantidadeAcesso(),
+							TipoPlanoEnum.PREMIUM.equals(item.getTipoPlano()) || TipoPlanoEnum.AVANCADO.equals(item.getTipoPlano())));
 		});
 
 		return new ResponsePagedCommom<AnuncioListSiteResponse>(

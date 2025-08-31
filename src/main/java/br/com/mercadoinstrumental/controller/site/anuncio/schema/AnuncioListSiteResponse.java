@@ -24,7 +24,9 @@ public record AnuncioListSiteResponse(
 		
 		String descricao,
 		
-		Long quantidadeAcesso
+		Long quantidadeAcesso,
+		
+		Boolean isDestaque
 		
 ) {
 

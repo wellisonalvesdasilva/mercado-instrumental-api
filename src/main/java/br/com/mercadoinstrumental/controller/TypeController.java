@@ -11,6 +11,7 @@ import br.com.mercadoinstrumental.controller.schema.geral.EnumResponseMapper;
 import br.com.mercadoinstrumental.domain.model.anuncio.MarcaInstrumentoMusicalEnum;
 import br.com.mercadoinstrumental.domain.model.anuncio.StatusAnuncioEnum;
 import br.com.mercadoinstrumental.domain.model.anuncio.TipoInstrumentoMusicalEnum;
+import br.com.mercadoinstrumental.model.usuario.TipoChavePixEnum;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -32,6 +33,11 @@ public class TypeController {
 	@GetMapping(path = "status")
 	public List<EnumResponse> listStatus() {
 		return EnumResponseMapper.INSTANCE.toEnumResponseList(StatusAnuncioEnum.values());
+	}
+	
+	@GetMapping(path = "tipos-chave-pix")
+	public List<EnumResponse> listTiposPix() {
+		return EnumResponseMapper.INSTANCE.toEnumResponseList(TipoChavePixEnum.values());
 	}
 	
 }
