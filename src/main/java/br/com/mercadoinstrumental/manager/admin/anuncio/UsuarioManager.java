@@ -34,7 +34,10 @@ public class UsuarioManager {
     
     @Value("${aplicacao-web}")
     public String urlBase;
-
+    
+    @Value("${empresa.nome}")
+    public String nomeEmpresa;
+    
     private static final String DATA_FORMAT = "dd/MM/yyyy HH:mm:ss";
 
     @Transactional
@@ -111,7 +114,7 @@ public class UsuarioManager {
                 </html>
                 """, 
                 usuario.getNome().toUpperCase(),
-                envioEmailManager.nomeEmpresa,
+                this.nomeEmpresa,
                 urlBase,
                 usuario.getPalavraChaveTemp(),
                 urlBase,
