@@ -133,20 +133,6 @@ public class AnuncioManager {
 		Anuncio anuncio = anuncioRepository.findById(idAnuncio)
 				.orElseThrow(BusinessException.from("Anuncio.1000", "Anuncio não encontrado para o id informado."));
 
-		artefatoAnuncioRepository.findAllByAnuncio(anuncio).forEach(artefato -> {
-
-			if (artefato.getSrcDocumento() != null && !artefato.getSrcDocumento().isEmpty()) {
-				Path caminhoArquivo = Paths.get(artefato.getSrcDocumento());
-				try {
-					Files.deleteIfExists(caminhoArquivo);
-				} catch (IOException e) {
-					System.err.println("Erro ao deletar arquivo: " + caminhoArquivo + ". " + e.getMessage());
-				}
-			}
-
-			artefatoAnuncioRepository.delete(artefato);
-		});
-
 		anuncio.setStatus(StatusAnuncioEnum.CANCELADO);
 		anuncioRepository.save(anuncio);
 		
@@ -312,9 +298,9 @@ public class AnuncioManager {
 	
 	private void validacoesCadastro(@Valid AnuncioReq req, Usuario usuario) {
 		
-	    if (TipoPlanoEnum.GRATIS.equals(req.tipoPlano()) && (anuncioRepository.existsByUsuarioAndTipoPlano(usuario, TipoPlanoEnum.GRATIS) || Boolean.TRUE.equals(usuario.getTeveAnuncioGratis()))) {
+	    /*if (TipoPlanoEnum.GRATIS.equals(req.tipoPlano()) && (anuncioRepository.existsByUsuarioAndTipoPlano(usuario, TipoPlanoEnum.GRATIS) || Boolean.TRUE.equals(usuario.getTeveAnuncioGratis()))) {
 	        throw new BusinessException("Usuário tem ou já teve um anúncio grátis cadastrado.");
-	    }
+	    }*/
 	}
 
 	

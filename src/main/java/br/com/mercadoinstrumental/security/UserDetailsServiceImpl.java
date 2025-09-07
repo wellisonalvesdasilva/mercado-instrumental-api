@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import br.com.mercadoinstrumental.exceptions.BusinessException;
 import br.com.mercadoinstrumental.model.usuario.Usuario;
 import br.com.mercadoinstrumental.usuario.repository.UsuarioRepository;
 
@@ -17,9 +18,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		Usuario cli = repo.findByEmailAndAtivo(email, true).orElse(null);
-		if (cli == null) {
+		
+		if (cli == null && repo.existsByEmail(email)) {
+			throw new BusinessException("Ative sua conta pelo e-mail recebido!");
+		} else if (cli == null ) {
 			throw new UsernameNotFoundException(email);
 		}
+		
 		return new UserSS(cli.getId(), cli.getNome(), cli.getEmail(), cli.getSenha(), cli.getPerfis());
 	}
 }
